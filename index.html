@@ -142,7 +142,7 @@
             let contentDiv = document.createElement('div');
             contentDiv.style.width = '100%';
 
-            // ================== LOGIKA MARKAZI ==================
+            // ================== YANGI LOGIKA (44 TAGACHA) ==================
 
             if (i >= 1 && i <= 32) {
                 // 1-32: A, B, C, D
@@ -161,11 +161,11 @@
                 renderDoubleInput(i, contentDiv);
             }
             else {
-                // Agar savol ko'payib ketsa, qolganiga bitta input
+                // Agar 44 tadan ko'p bo'lsa
                 renderTextInput(i, contentDiv);
             }
 
-            // ====================================================
+            // =============================================================
 
             header.appendChild(num);
             header.appendChild(contentDiv);
@@ -205,7 +205,7 @@
             
             input.oninput = (e) => {
                 let val = e.target.value.toUpperCase().trim();
-                e.target.value = val; // Ekranda ham darrov katta qilish
+                e.target.value = val; 
                 answers[idx-1] = val.length > 0 ? val : null;
                 updateProgress();
             };
@@ -219,14 +219,14 @@
             
             // a) qismi
             let rowA = document.createElement('div'); rowA.className = 'input-row';
-            let labelA = document.createElement('span'); labelA.className = 'input-label'; labelA.innerText = 'a)';
+            let labelA = document.createElement('span'); labelA.className = 'input-label'; labelA.innerText = 'a';
             let inputA = document.createElement('input'); 
             inputA.className = 'text-input'; inputA.placeholder = 'JAVOB A...'; inputA.id = `q${idx}_a`;
             rowA.appendChild(labelA); rowA.appendChild(inputA);
 
             // b) qismi
             let rowB = document.createElement('div'); rowB.className = 'input-row';
-            let labelB = document.createElement('span'); labelB.className = 'input-label'; labelB.innerText = 'b)';
+            let labelB = document.createElement('span'); labelB.className = 'input-label'; labelB.innerText = 'b';
             let inputB = document.createElement('input'); 
             inputB.className = 'text-input'; inputB.placeholder = 'JAVOB B...'; inputB.id = `q${idx}_b`;
             rowB.appendChild(labelB); rowB.appendChild(inputB);
@@ -242,11 +242,11 @@
                 document.getElementById(`q${idx}_a`).value = valA;
                 document.getElementById(`q${idx}_b`).value = valB;
 
-                // Ikkalasiyam to'ldirilgan bo'lsa javobni yozamiz
+                // Ikkalasiyam to'ldirilgan bo'lsa
                 if (valA && valB) {
                     answers[idx-1] = `a)${valA} b)${valB}`;
                 } 
-                // Yoki bittasi to'ldirilgan bo'lsa ham yozib qo'yamiz (Admin o'zi hal qiladi)
+                // Yoki bittasi
                 else if (valA || valB) {
                     answers[idx-1] = `a)${valA} b)${valB}`;
                 }
@@ -278,7 +278,6 @@
                     buttons: [{id: 'cancel', type: 'cancel'}, {id: 'ok', type: 'destructive', text: 'HA'}]
                 }, function(btnId) {
                     if (btnId === 'ok') {
-                        // Bo'sh qolgan joylarga "X" qo'yib yuboramiz
                         let finalData = answers.map(a => a ? a : "X");
                         tg.sendData(JSON.stringify(finalData));
                     }
