@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Test Ishlash</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--tg-theme-bg-color, #f5f5f5);
+            color: var(--tg-theme-text-color, #000);
+            margin: 0; padding: 20px;
+            user-select: none;
+        }
+        h2 { text-align: center; margin-bottom: 20px; }
+        .question-row {
+            display: flex; align-items: center; justify-content: space-between;
+            background: var(--tg-theme-secondary-bg-color, #fff);
+            margin-bottom: 10px; padding: 10px; border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .q-num { font-weight: bold; width: 30px; font-size: 16px; }
+        .options { display: flex; gap: 8px; }
+        .option-btn {
+            width: 40px; height: 40px; border-radius: 50%;
+            border: 1px solid #ddd; display: flex;
+            align-items: center; justify-content: center;
+            font-weight: bold; cursor: pointer; transition: 0.2s;
+        }
+        /* Tanlangan variant rangi */
+        .option-btn.selected {
+            background-color: var(--tg-theme-button-color, #2ea6ff);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border-color: transparent;
+        }
+        #submitBtn {
+            width: 100%; padding: 15px; margin-top: 20px;
+            background-color: var(--tg-theme-button-color, #2b9816);
+            color: white; border: none; border-radius: 10px;
+            font-size: 18px; font-weight: bold; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2 id="title">Testni belgilang</h2>
+    <div id="container"></div>
+    <button id="submitBtn" onclick="sendData()">TESTNI YAKUNLASH</button>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // URL dan savollar sonini olish (bot yuboradi: ?count=30)
+        const urlParams = new URLSearchParams(window.location.search);
+        const count = parseInt(urlParams.get('count')) || 10;
+        
+        let answers = new Array(count).fill(null); // Javoblar massivi
+
+        const container = document.getElementById('container');
+        const variants = ['A', 'B', 'C', 'D'];
+
+        // Savol qatorlarini chizish
+        for (let i = 1; i <= count; i++) {
+            let row = document.createElement('div');
+            row.className = 'question-row';
+            
+            let num = document.createElement('div');
+            num.className = 'q-num';
+            num.innerText = i + ".";
+            
+            let optsDiv = document.createElement('div');
+            optsDiv.className = 'options';
+
+            variants.forEach(variant => {
+                let btn = document.createElement('div');
+                btn.className = 'option-btn';
+                btn.innerText = variant;
+                btn.onclick = () => {
+                    // Eskisini o'chirish
+                    Array.from(optsDiv.children).forEach(c => c.classList.remove('selected'));
+                    // Yangisini belgilash
+                    btn.classList.add('selected');
+                    answers[i-1] = variant.toLowerCase(); // a, b, c, d
+                };
+                optsDiv.appendChild(btn);
+            });
+
+            row.appendChild(num);
+            row.appendChild(optsDiv);
+            container.appendChild(row);
+        }
+
+        function sendData() {
+            // Javoblarni tekshirish (ixtiyoriy)
+            let solved = answers.filter(a => a !== null).length;
+            if (solved < count) {
+                if(!confirm(`Siz ${count} ta savoldan faqat ${solved} tasini belgiladingiz. Baribir yuborasizmi?`)) return;
+            }
+            // Botga yuborish (JSON string sifatida)
+            tg.sendData(JSON.stringify(answers)); 
+        }
+    </script>
+</body>
+</html>
