@@ -3,274 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Professional Test</title>
+    <title>Milliy Sertifikat</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* --- RANG SOZLAMALARI (Maksimal Kontrast) --- */
         :root {
-            --bg-color: #f2f2f2;       /* Orqa fon: Juda och kulrang */
-            --card-bg: #ffffff;        /* Kartochka: Top-toza Oq */
-            --text-color: #000000;     /* Yozuv: Qop-qora */
-            --text-secondary: #555555;
-            --accent-color: #007aff;   /* Yorqin Ko'k */
-            --accent-text: #ffffff;
-            --border-color: #d1d1d1;
+            --bg-color: #f2f2f2;
+            --card-bg: #ffffff;
+            --text-color: #000000;
+            --accent-color: #007aff;
             --success-color: #2b9816;
-            --radius: 14px;
         }
 
         body {
-            font-family: 'Roboto', sans-serif; /* O'qishga eng qulay shrift */
+            font-family: 'Roboto', sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0; padding: 0;
-            padding-bottom: 100px;
+            margin: 0; padding: 0; padding-bottom: 100px;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- HEADER (Katta yozuvlar) --- */
         .header {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            background: #ffffff;
-            padding: 15px 20px;
-            z-index: 100;
+            position: fixed; top: 0; left: 0; right: 0;
+            background: #fff; padding: 15px 20px; z-index: 100;
             border-bottom: 2px solid #e0e0e0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
+        .progress-info { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 10px; }
+        .progress-bar { height: 10px; background: #e0e0e0; border-radius: 20px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: var(--accent-color); transition: width 0.3s; }
 
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 16px; /* Katta shrift */
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .progress-bar {
-            height: 10px; /* Qalinroq chiziq */
-            background: #e0e0e0;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--accent-color);
-            border-radius: 20px;
-            transition: width 0.3s ease;
-        }
-
-        /* --- CONTENT (Zich va Katta) --- */
-        #container {
-            padding: 15px;
-            margin-top: 80px;
-            max-width: 600px;
-            margin-left: auto; margin-right: auto;
-        }
+        #container { padding: 15px; margin-top: 80px; max-width: 600px; margin-left: auto; margin-right: auto; }
 
         .question-card {
             background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 8px 10px; /* Ichki joyni qisqartirdik */
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Ikki chetga taqash */
-            border: 2px solid #e0e0e0; /* Aniq chegara */
-            box-shadow: 0 4px 0 rgba(0,0,0,0.05); /* Yengil 3D effekt */
+            border-radius: 14px;
+            padding: 10px; margin-bottom: 10px;
+            display: flex; flex-direction: column;
+            border: 2px solid #e0e0e0;
             animation: fadeIn 0.3s ease forwards;
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        .q-num {
-            font-size: 24px; /* JUDA KATTA RAQAM */
-            font-weight: 900;
-            color: var(--text-color);
-            width: 50px; 
-            text-align: center;
-            letter-spacing: -1px;
-        }
-
-        .options {
-            display: flex;
-            gap: 4px; /* Tugmalar bir-biriga juda yaqin */
-        }
-
-        .option-btn {
-            width: 52px;  /* KATTA TUGMA */
-            height: 52px; /* KATTA TUGMA */
-            border-radius: 10px;
-            border: 2px solid var(--border-color);
-            background: #f8f8f8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 22px; /* KATTA HARF */
-            cursor: pointer;
-            color: #333;
-            transition: all 0.1s;
-        }
-
-        /* Bosilgandagi holat */
-        .option-btn:active { transform: scale(0.95); background: #eee; }
-
-        /* Tanlangan holat (Yorqin) */
-        .option-btn.selected {
-            background-color: var(--accent-color);
-            color: white;
-            border-color: var(--accent-color);
-            box-shadow: 0 4px 10px rgba(0, 122, 255, 0.4);
-            transform: scale(1.05);
-            z-index: 2;
-        }
-
-        /* --- FOOTER BUTTON (Katta va qulay) --- */
-        .footer {
-            position: fixed;
-            bottom: 20px; left: 20px; right: 20px;
-            z-index: 100;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        #submitBtn {
-            width: 100%;
-            padding: 18px; /* Qalin tugma */
-            background: var(--success-color);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-size: 20px; /* Katta yozuv */
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(43, 152, 22, 0.4);
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
         
-        #submitBtn:active { transform: scale(0.98); }
+        .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
 
-        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
-
-        /* Kichik ekranlar uchun moslashuv (iPhone SE kabi) */
-        @media (max-width: 360px) {
-            .option-btn { width: 45px; height: 45px; font-size: 18px; }
-            .q-num { font-size: 20px; width: 40px; }
-            #container { padding: 10px; }
+        .q-num {
+            font-size: 20px; font-weight: 900; color: #333;
+            width: 40px; text-align: center;
         }
+
+        .options { display: flex; gap: 4px; justify-content: flex-end; width: 100%; flex-wrap: wrap; }
+
+        .option-btn {
+            width: 45px; height: 45px;
+            border-radius: 8px; border: 2px solid #d1d1d1;
+            background: #f8f8f8; display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 18px; cursor: pointer;
+        }
+        .option-btn.selected { background-color: var(--accent-color); color: white; border-color: var(--accent-color); }
+
+        /* Yozma javobinputlari */
+        .text-input {
+            width: 100%; padding: 12px;
+            font-size: 18px; font-weight: bold;
+            border: 2px solid #d1d1d1; border-radius: 8px;
+            text-transform: uppercase; /* Doim katta harf */
+            box-sizing: border-box;
+        }
+        .text-input:focus { border-color: var(--accent-color); outline: none; }
+
+        /* 44-savol uchun maxsus */
+        .double-input-container { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+        .input-row { display: flex; align-items: center; gap: 10px; }
+        .input-label { font-weight: bold; font-size: 18px; }
+
+        .footer { position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 100; max-width: 600px; margin: 0 auto; }
+        #submitBtn {
+            width: 100%; padding: 18px; background: var(--success-color); color: white;
+            border: none; border-radius: 16px; font-size: 20px; font-weight: 800; cursor: pointer;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="progress-info">
-            <span id="progress-text">Jarayon: 0%</span>
-            <span id="count-text">0 / 0</span>
-        </div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
-        </div>
+        <div class="progress-info"><span id="progress-text">0%</span><span id="count-text">0/0</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
     </div>
 
     <div id="container"></div>
 
     <div class="footer">
-        <button id="submitBtn" onclick="sendData()">
-            <span>YAKUNLASH</span>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        </button>
+        <button id="submitBtn" onclick="sendData()">YAKUNLASH</button>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        
-        // MAJBURIY OQ FON (TELEGRAM SOZLAMALARIDAN QAT'IY NAZAR)
-        tg.setHeaderColor('#ffffff'); 
-        tg.setBackgroundColor('#f2f2f2');
+        tg.setHeaderColor('#ffffff'); tg.setBackgroundColor('#f2f2f2');
         tg.enableClosingConfirmation();
 
-        // URL parametrlarini o'qish
         const urlParams = new URLSearchParams(window.location.search);
-        const count = parseInt(urlParams.get('count')) || 10;
+        const count = parseInt(urlParams.get('count')) || 45; // Default 45 ta
         
         let answers = new Array(count).fill(null);
         const container = document.getElementById('container');
-        const variants = ['A', 'B', 'C', 'D'];
 
         document.getElementById('count-text').innerText = `0 / ${count}`;
 
         for (let i = 1; i <= count; i++) {
             let row = document.createElement('div');
             row.className = 'question-card';
-            row.style.animationDelay = `${i * 0.02}s`;
+            row.style.animationDelay = `${i * 0.01}s`;
 
+            let header = document.createElement('div');
+            header.className = 'card-header';
+            
             let num = document.createElement('div');
             num.className = 'q-num';
-            // Raqamlar 10 dan kichik bo'lsa oldiga 0 qo'shamiz (chiroyli turishi uchun)
-            num.innerText = i < 10 ? `0${i}` : i;
+            num.innerText = i;
             
+            let contentDiv = document.createElement('div');
+            contentDiv.style.width = '100%';
+
+            // --- MANTIQ: Qaysi savolga qanaqa javob chiqishi kerak? ---
+
+            if (i >= 1 && i <= 32) {
+                // 1-32: A, B, C, D
+                renderOptions(i, ['A','B','C','D'], contentDiv);
+            } 
+            else if (i >= 33 && i <= 35) {
+                // 33-35: A, B, C, D, E, F
+                renderOptions(i, ['A','B','C','D','E','F'], contentDiv);
+            }
+            else if (i == 44) {
+                // 44: Ikkita input (a va b)
+                renderDoubleInput(i, contentDiv);
+            }
+            else {
+                // 36-43: Yozma (Bitta input)
+                renderTextInput(i, contentDiv);
+            }
+
+            header.appendChild(num);
+            header.appendChild(contentDiv);
+            row.appendChild(header);
+            container.appendChild(row);
+        }
+
+        // Oddiy variantli tugmalarni chizish funksiyasi
+        function renderOptions(idx, variants, parent) {
             let optsDiv = document.createElement('div');
             optsDiv.className = 'options';
-
             variants.forEach(variant => {
                 let btn = document.createElement('div');
                 btn.className = 'option-btn';
                 btn.innerText = variant;
-                
                 btn.onclick = () => {
                     if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
-
-                    // Tanlash logikasi
                     Array.from(optsDiv.children).forEach(c => c.classList.remove('selected'));
                     btn.classList.add('selected');
-                    answers[i-1] = variant.toLowerCase();
-                    
+                    answers[idx-1] = variant; // Katta harf
                     updateProgress();
                 };
+                parent.appendChild(optsDiv);
                 optsDiv.appendChild(btn);
             });
+        }
 
-            row.appendChild(num);
-            row.appendChild(optsDiv);
-            container.appendChild(row);
+        // Yozma javob (Input) chizish funksiyasi
+        function renderTextInput(idx, parent) {
+            let input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'text-input';
+            input.placeholder = 'Javobni yozing...';
+            input.oninput = (e) => {
+                let val = e.target.value.toUpperCase().trim();
+                answers[idx-1] = val.length > 0 ? val : null;
+                updateProgress();
+            };
+            parent.appendChild(input);
+        }
+
+        // 44-savol uchun (a va b)
+        function renderDoubleInput(idx, parent) {
+            let wrapper = document.createElement('div');
+            wrapper.className = 'double-input-container';
+            
+            // a) qismi
+            let rowA = document.createElement('div'); rowA.className = 'input-row';
+            let labelA = document.createElement('span'); labelA.className = 'input-label'; labelA.innerText = 'a)';
+            let inputA = document.createElement('input'); inputA.className = 'text-input'; inputA.id = `q${idx}_a`;
+            rowA.appendChild(labelA); rowA.appendChild(inputA);
+
+            // b) qismi
+            let rowB = document.createElement('div'); rowB.className = 'input-row';
+            let labelB = document.createElement('span'); labelB.className = 'input-label'; labelB.innerText = 'b)';
+            let inputB = document.createElement('input'); inputB.className = 'text-input'; inputB.id = `q${idx}_b`;
+            rowB.appendChild(labelB); rowB.appendChild(inputB);
+
+            wrapper.appendChild(rowA);
+            wrapper.appendChild(rowB);
+            parent.appendChild(wrapper);
+
+            // Javobni yig'ish (Format: "A:javob B:javob")
+            const updateDouble = () => {
+                let valA = document.getElementById(`q${idx}_a`).value.toUpperCase().trim();
+                let valB = document.getElementById(`q${idx}_b`).value.toUpperCase().trim();
+                if (valA && valB) {
+                    answers[idx-1] = `a)${valA} b)${valB}`;
+                } else {
+                    answers[idx-1] = null;
+                }
+                updateProgress();
+            };
+
+            inputA.oninput = updateDouble;
+            inputB.oninput = updateDouble;
         }
 
         function updateProgress() {
             let solved = answers.filter(a => a !== null).length;
             let percent = Math.round((solved / count) * 100);
-            
             document.getElementById('progress-fill').style.width = `${percent}%`;
-            document.getElementById('progress-text').innerText = `Jarayon: ${percent}%`;
-            document.getElementById('count-text').innerText = `${solved} / ${count}`;
+            document.getElementById('progress-text').innerText = `${percent}%`;
+            document.getElementById('count-text').innerText = `${solved}/${count}`;
         }
 
         function sendData() {
-            let solved = answers.filter(a => a !== null).length;
-            
-            if (solved < count) {
-                tg.showPopup({
-                    title: 'Test Yakunlanmadi!',
-                    message: `Siz ${count} ta savoldan faqat ${solved} tasini belgiladingiz.\n\nBaribir yakunlaysizmi?`,
-                    buttons: [
-                        {id: 'cancel', type: 'cancel'},
-                        {id: 'ok', type: 'destructive', text: 'HA, YAKUNLASH'}
-                    ]
-                }, function(btnId) {
-                    if (btnId === 'ok') {
-                        tg.sendData(JSON.stringify(answers));
-                    }
-                });
-            } else {
-                tg.sendData(JSON.stringify(answers));
-            }
+            // Hammasini majburiy KATTA HARF qilib yuboramiz
+            let finalData = answers.map(a => a ? a.toUpperCase() : "X");
+            tg.sendData(JSON.stringify(finalData));
         }
     </script>
 </body>
