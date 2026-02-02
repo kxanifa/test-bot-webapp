@@ -5,56 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Professional Test</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* --- RANG SOZLAMALARI (O'zgarmas OQ fon) --- */
+        /* --- RANG SOZLAMALARI (Maksimal Kontrast) --- */
         :root {
-            --bg-color: #f0f2f5;       /* Orqa fon: Och kulrang */
-            --card-bg: #ffffff;        /* Kartochka: Oq */
-            --text-color: #000000;     /* Yozuv: Qora */
-            --hint-color: #888888;
-            --accent-color: #007aff;   /* Chiroyli ko'k */
+            --bg-color: #f2f2f2;       /* Orqa fon: Juda och kulrang */
+            --card-bg: #ffffff;        /* Kartochka: Top-toza Oq */
+            --text-color: #000000;     /* Yozuv: Qop-qora */
+            --text-secondary: #555555;
+            --accent-color: #007aff;   /* Yorqin Ko'k */
             --accent-text: #ffffff;
-            --border-color: #e4e4e4;
+            --border-color: #d1d1d1;
             --success-color: #2b9816;
-            --shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            --radius: 12px;
+            --radius: 14px;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Roboto', sans-serif; /* O'qishga eng qulay shrift */
             background-color: var(--bg-color);
             color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            padding-bottom: 80px;
+            margin: 0; padding: 0;
+            padding-bottom: 100px;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- HEADER (Kompakt) --- */
+        /* --- HEADER (Katta yozuvlar) --- */
         .header {
             position: fixed;
             top: 0; left: 0; right: 0;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 15px;
+            background: #ffffff;
+            padding: 15px 20px;
             z-index: 100;
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 2px solid #e0e0e0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
         .progress-info {
             display: flex;
             justify-content: space-between;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--text-color);
+            font-size: 16px; /* Katta shrift */
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
         }
 
         .progress-bar {
-            height: 5px;
+            height: 10px; /* Qalinroq chiziq */
             background: #e0e0e0;
-            border-radius: 10px;
+            border-radius: 20px;
             overflow: hidden;
         }
 
@@ -62,106 +60,111 @@
             height: 100%;
             width: 0%;
             background: var(--accent-color);
-            border-radius: 10px;
+            border-radius: 20px;
             transition: width 0.3s ease;
         }
 
-        /* --- CONTENT (Zichlashtirilgan) --- */
+        /* --- CONTENT (Zich va Katta) --- */
         #container {
-            padding: 12px;
-            margin-top: 50px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
+            padding: 15px;
+            margin-top: 80px;
+            max-width: 600px;
+            margin-left: auto; margin-right: auto;
         }
 
         .question-card {
             background: var(--card-bg);
             border-radius: var(--radius);
-            padding: 10px 12px;  /* Ichki masofa kamaytirildi */
-            margin-bottom: 8px;   /* Kartalar orasi yaqinlashtirildi */
+            padding: 8px 10px; /* Ichki joyni qisqartirdik */
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            animation: fadeIn 0.4s ease forwards;
+            justify-content: space-between; /* Ikki chetga taqash */
+            border: 2px solid #e0e0e0; /* Aniq chegara */
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05); /* Yengil 3D effekt */
+            animation: fadeIn 0.3s ease forwards;
             opacity: 0;
-            transform: translateY(5px);
+            transform: translateY(10px);
         }
 
         .q-num {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 24px; /* JUDA KATTA RAQAM */
+            font-weight: 900;
             color: var(--text-color);
-            width: 35px; /* Raqam uchun joy kichraytirildi */
+            width: 50px; 
+            text-align: center;
+            letter-spacing: -1px;
         }
 
         .options {
             display: flex;
-            gap: 6px; /* Tugmalar orasi yaqinlashtirildi */
+            gap: 4px; /* Tugmalar bir-biriga juda yaqin */
         }
 
         .option-btn {
-            width: 36px;  /* Tugma kichraytirildi */
-            height: 36px;
-            border-radius: 10px; /* Biroz to'rtburchakroq */
-            border: 1px solid var(--border-color);
-            background: #f9f9f9;
+            width: 52px;  /* KATTA TUGMA */
+            height: 52px; /* KATTA TUGMA */
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            background: #f8f8f8;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
-            font-size: 15px;
+            font-weight: 700;
+            font-size: 22px; /* KATTA HARF */
             cursor: pointer;
-            transition: all 0.15s;
-            color: var(--text-color);
+            color: #333;
+            transition: all 0.1s;
         }
 
-        /* Bosilgandagi effekt */
-        .option-btn:active {
-            transform: scale(0.95);
-        }
+        /* Bosilgandagi holat */
+        .option-btn:active { transform: scale(0.95); background: #eee; }
 
-        /* Tanlangan variant */
+        /* Tanlangan holat (Yorqin) */
         .option-btn.selected {
             background-color: var(--accent-color);
-            color: var(--accent-text);
+            color: white;
             border-color: var(--accent-color);
-            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+            box-shadow: 0 4px 10px rgba(0, 122, 255, 0.4);
+            transform: scale(1.05);
+            z-index: 2;
         }
 
-        /* --- FOOTER BUTTON --- */
+        /* --- FOOTER BUTTON (Katta va qulay) --- */
         .footer {
             position: fixed;
-            bottom: 15px; left: 15px; right: 15px;
+            bottom: 20px; left: 20px; right: 20px;
             z-index: 100;
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
-            left: 0; right: 0;
-            padding: 0 15px;
         }
 
         #submitBtn {
             width: 100%;
-            padding: 14px;
+            padding: 18px; /* Qalin tugma */
             background: var(--success-color);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
+            border-radius: 16px;
+            font-size: 20px; /* Katta yozuv */
+            font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(43, 152, 22, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            box-shadow: 0 6px 20px rgba(43, 152, 22, 0.4);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-
+        
         #submitBtn:active { transform: scale(0.98); }
 
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        /* Kichik ekranlar uchun moslashuv (iPhone SE kabi) */
+        @media (max-width: 360px) {
+            .option-btn { width: 45px; height: 45px; font-size: 18px; }
+            .q-num { font-size: 20px; width: 40px; }
+            #container { padding: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -181,20 +184,20 @@
     <div class="footer">
         <button id="submitBtn" onclick="sendData()">
             <span>YAKUNLASH</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
         </button>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        // Rangni majburan oq qilamiz (Telefoni qora rejimda bo'lsa ham)
-        tg.setHeaderColor('#ffffff'); 
-        tg.setBackgroundColor('#f0f2f5');
         
+        // MAJBURIY OQ FON (TELEGRAM SOZLAMALARIDAN QAT'IY NAZAR)
+        tg.setHeaderColor('#ffffff'); 
+        tg.setBackgroundColor('#f2f2f2');
         tg.enableClosingConfirmation();
 
-        // URL dan ma'lumot olish
+        // URL parametrlarini o'qish
         const urlParams = new URLSearchParams(window.location.search);
         const count = parseInt(urlParams.get('count')) || 10;
         
@@ -207,10 +210,11 @@
         for (let i = 1; i <= count; i++) {
             let row = document.createElement('div');
             row.className = 'question-card';
-            row.style.animationDelay = `${i * 0.02}s`; // Tezroq animatsiya
+            row.style.animationDelay = `${i * 0.02}s`;
 
             let num = document.createElement('div');
             num.className = 'q-num';
+            // Raqamlar 10 dan kichik bo'lsa oldiga 0 qo'shamiz (chiroyli turishi uchun)
             num.innerText = i < 10 ? `0${i}` : i;
             
             let optsDiv = document.createElement('div');
@@ -222,11 +226,13 @@
                 btn.innerText = variant;
                 
                 btn.onclick = () => {
-                    if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged(); // Yengil vibratsiya
+                    if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
 
+                    // Tanlash logikasi
                     Array.from(optsDiv.children).forEach(c => c.classList.remove('selected'));
                     btn.classList.add('selected');
                     answers[i-1] = variant.toLowerCase();
+                    
                     updateProgress();
                 };
                 optsDiv.appendChild(btn);
@@ -240,6 +246,7 @@
         function updateProgress() {
             let solved = answers.filter(a => a !== null).length;
             let percent = Math.round((solved / count) * 100);
+            
             document.getElementById('progress-fill').style.width = `${percent}%`;
             document.getElementById('progress-text').innerText = `Jarayon: ${percent}%`;
             document.getElementById('count-text').innerText = `${solved} / ${count}`;
@@ -247,13 +254,19 @@
 
         function sendData() {
             let solved = answers.filter(a => a !== null).length;
+            
             if (solved < count) {
                 tg.showPopup({
-                    title: 'Diqqat!',
-                    message: `Siz ${count} ta savoldan faqat ${solved} tasini belgiladingiz. Baribir yakunlaysizmi?`,
-                    buttons: [{id: 'cancel', type: 'cancel'}, {id: 'ok', type: 'destructive', text: 'Ha, yakunlash'}]
+                    title: 'Test Yakunlanmadi!',
+                    message: `Siz ${count} ta savoldan faqat ${solved} tasini belgiladingiz.\n\nBaribir yakunlaysizmi?`,
+                    buttons: [
+                        {id: 'cancel', type: 'cancel'},
+                        {id: 'ok', type: 'destructive', text: 'HA, YAKUNLASH'}
+                    ]
                 }, function(btnId) {
-                    if (btnId === 'ok') tg.sendData(JSON.stringify(answers));
+                    if (btnId === 'ok') {
+                        tg.sendData(JSON.stringify(answers));
+                    }
                 });
             } else {
                 tg.sendData(JSON.stringify(answers));
