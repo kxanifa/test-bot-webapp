@@ -5,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Professional Test</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* --- RANG SOZLAMALARI (O'zgarmas OQ fon) --- */
         :root {
-            --bg-color: var(--tg-theme-bg-color, #f0f2f5);
-            --card-bg: var(--tg-theme-secondary-bg-color, #ffffff);
-            --text-color: var(--tg-theme-text-color, #1a1a1a);
-            --hint-color: var(--tg-theme-hint-color, #999999);
-            --accent-color: var(--tg-theme-button-color, #3390ec);
-            --accent-text: var(--tg-theme-button-text-color, #ffffff);
+            --bg-color: #f0f2f5;       /* Orqa fon: Och kulrang */
+            --card-bg: #ffffff;        /* Kartochka: Oq */
+            --text-color: #000000;     /* Yozuv: Qora */
+            --hint-color: #888888;
+            --accent-color: #007aff;   /* Chiroyli ko'k */
+            --accent-text: #ffffff;
+            --border-color: #e4e4e4;
             --success-color: #2b9816;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            --radius: 16px;
+            --shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
         }
 
         body {
@@ -25,34 +27,33 @@
             color: var(--text-color);
             margin: 0;
             padding: 0;
-            padding-bottom: 90px; /* Tugma uchun joy */
-            transition: background-color 0.3s;
+            padding-bottom: 80px;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- HEADER & PROGRESS --- */
+        /* --- HEADER (Kompakt) --- */
         .header {
             position: fixed;
             top: 0; left: 0; right: 0;
-            background: var(--bg-color);
-            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
             z-index: 100;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .progress-info {
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--hint-color);
+            margin-bottom: 6px;
+            color: var(--text-color);
         }
 
         .progress-bar {
-            height: 6px;
-            background: rgba(128, 128, 128, 0.2);
+            height: 5px;
+            background: #e0e0e0;
             border-radius: 10px;
             overflow: hidden;
         }
@@ -62,14 +63,14 @@
             width: 0%;
             background: var(--accent-color);
             border-radius: 10px;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.3s ease;
         }
 
-        /* --- CONTENT --- */
+        /* --- CONTENT (Zichlashtirilgan) --- */
         #container {
-            padding: 20px;
-            margin-top: 70px; /* Header balandligi */
-            max-width: 600px;
+            padding: 12px;
+            margin-top: 50px;
+            max-width: 500px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -77,48 +78,49 @@
         .question-card {
             background: var(--card-bg);
             border-radius: var(--radius);
-            padding: 16px;
-            margin-bottom: 12px;
+            padding: 10px 12px;  /* Ichki masofa kamaytirildi */
+            margin-bottom: 8px;   /* Kartalar orasi yaqinlashtirildi */
             display: flex;
             align-items: center;
             justify-content: space-between;
             box-shadow: var(--shadow);
-            animation: fadeIn 0.5s ease forwards;
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.4s ease forwards;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(5px);
         }
 
         .q-num {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--text-color);
-            width: 40px;
-            opacity: 0.8;
+            width: 35px; /* Raqam uchun joy kichraytirildi */
         }
 
         .options {
             display: flex;
-            gap: 10px;
+            gap: 6px; /* Tugmalar orasi yaqinlashtirildi */
         }
 
         .option-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            border: 1.5px solid rgba(128, 128, 128, 0.2);
+            width: 36px;  /* Tugma kichraytirildi */
+            height: 36px;
+            border-radius: 10px; /* Biroz to'rtburchakroq */
+            border: 1px solid var(--border-color);
+            background: #f9f9f9;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.15s;
             color: var(--text-color);
-            background: transparent;
         }
 
+        /* Bosilgandagi effekt */
         .option-btn:active {
-            transform: scale(0.92);
+            transform: scale(0.95);
         }
 
         /* Tanlangan variant */
@@ -126,55 +128,40 @@
             background-color: var(--accent-color);
             color: var(--accent-text);
             border-color: var(--accent-color);
-            box-shadow: 0 4px 10px rgba(51, 144, 236, 0.3);
-            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
         }
 
         /* --- FOOTER BUTTON --- */
         .footer {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
+            bottom: 15px; left: 15px; right: 15px;
             z-index: 100;
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
-            left: 0; right: 0; /* Center uchun */
-            padding: 0 20px;
+            left: 0; right: 0;
+            padding: 0 15px;
         }
 
         #submitBtn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: var(--success-color);
             color: white;
             border: none;
-            border-radius: 14px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(43, 152, 22, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(43, 152, 22, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
 
-        #submitBtn:active {
-            transform: scale(0.98);
-        }
+        #submitBtn:active { transform: scale(0.98); }
 
-        /* Animatsiyalar */
-        @keyframes fadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Mobil moslashuv */
-        @media (max-width: 380px) {
-            .option-btn { width: 36px; height: 36px; font-size: 14px; }
-            .q-num { font-size: 16px; width: 30px; }
-        }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -194,21 +181,18 @@
     <div class="footer">
         <button id="submitBtn" onclick="sendData()">
             <span>YAKUNLASH</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
         </button>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        tg.enableClosingConfirmation(); // Yopishdan oldin so'rash
-
-        // Ranglarni Telegram mavzusiga moslash
-        document.documentElement.style.setProperty('--bg-color', tg.themeParams.bg_color || '#f0f2f5');
-        document.documentElement.style.setProperty('--card-bg', tg.themeParams.secondary_bg_color || '#ffffff');
-        document.documentElement.style.setProperty('--text-color', tg.themeParams.text_color || '#1a1a1a');
-        document.documentElement.style.setProperty('--accent-color', tg.themeParams.button_color || '#3390ec');
-        document.documentElement.style.setProperty('--accent-text', tg.themeParams.button_text_color || '#ffffff');
+        // Rangni majburan oq qilamiz (Telefoni qora rejimda bo'lsa ham)
+        tg.setHeaderColor('#ffffff'); 
+        tg.setBackgroundColor('#f0f2f5');
+        
+        tg.enableClosingConfirmation();
 
         // URL dan ma'lumot olish
         const urlParams = new URLSearchParams(window.location.search);
@@ -218,15 +202,12 @@
         const container = document.getElementById('container');
         const variants = ['A', 'B', 'C', 'D'];
 
-        // Dastlabki matnlarni sozlash
         document.getElementById('count-text').innerText = `0 / ${count}`;
 
-        // Kartochkalarni yaratish
         for (let i = 1; i <= count; i++) {
             let row = document.createElement('div');
             row.className = 'question-card';
-            // Har bir karta sal kechikib chiqadi (stagger animation)
-            row.style.animationDelay = `${i * 0.03}s`;
+            row.style.animationDelay = `${i * 0.02}s`; // Tezroq animatsiya
 
             let num = document.createElement('div');
             num.className = 'q-num';
@@ -240,16 +221,12 @@
                 btn.className = 'option-btn';
                 btn.innerText = variant;
                 
-                // Bosish effekti
                 btn.onclick = () => {
-                    // Vibratsiya (agar telefon podderjka qilsa)
-                    if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+                    if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged(); // Yengil vibratsiya
 
-                    // Tanlash
                     Array.from(optsDiv.children).forEach(c => c.classList.remove('selected'));
                     btn.classList.add('selected');
                     answers[i-1] = variant.toLowerCase();
-                    
                     updateProgress();
                 };
                 optsDiv.appendChild(btn);
@@ -260,36 +237,23 @@
             container.appendChild(row);
         }
 
-        // Progress barni yangilash
         function updateProgress() {
             let solved = answers.filter(a => a !== null).length;
             let percent = Math.round((solved / count) * 100);
-            
             document.getElementById('progress-fill').style.width = `${percent}%`;
             document.getElementById('progress-text').innerText = `Jarayon: ${percent}%`;
             document.getElementById('count-text').innerText = `${solved} / ${count}`;
-
-            // Agar hammasi belgilansa, tugma rangini o'zgartirish yoki sakratish mumkin
-            if (solved === count) {
-                 if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-            }
         }
 
         function sendData() {
             let solved = answers.filter(a => a !== null).length;
-            
             if (solved < count) {
                 tg.showPopup({
                     title: 'Diqqat!',
                     message: `Siz ${count} ta savoldan faqat ${solved} tasini belgiladingiz. Baribir yakunlaysizmi?`,
-                    buttons: [
-                        {id: 'cancel', type: 'cancel'},
-                        {id: 'ok', type: 'default', text: 'Ha, yakunlash'}
-                    ]
+                    buttons: [{id: 'cancel', type: 'cancel'}, {id: 'ok', type: 'destructive', text: 'Ha, yakunlash'}]
                 }, function(btnId) {
-                    if (btnId === 'ok') {
-                        tg.sendData(JSON.stringify(answers));
-                    }
+                    if (btnId === 'ok') tg.sendData(JSON.stringify(answers));
                 });
             } else {
                 tg.sendData(JSON.stringify(answers));
