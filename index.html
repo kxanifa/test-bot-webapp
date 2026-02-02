@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f2f2f2;
+            --bg-color: #f4f4f4;
             --card-bg: #ffffff;
             --text-color: #000000;
             --accent-color: #007aff;
@@ -19,7 +19,7 @@
         body {
             font-family: 'Roboto', sans-serif;
             background-color: var(--bg-color);
-            margin: 0; padding: 0; padding-bottom: 100px;
+            margin: 0; padding: 0; padding-bottom: 120px;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -40,24 +40,25 @@
         .question-card {
             background: var(--card-bg);
             border-radius: 14px;
-            padding: 12px; margin-bottom: 12px;
+            padding: 12px; margin-bottom: 15px;
             display: flex; flex-direction: column;
             border: 2px solid #e0e0e0;
             animation: fadeIn 0.3s ease forwards;
         }
         
-        .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 
         .q-num {
-            font-size: 22px; font-weight: 900; color: #333;
-            width: 50px; text-align: center;
+            font-size: 24px; font-weight: 900; color: #333;
+            min-width: 45px; text-align: center;
+            background: #eee; padding: 5px; border-radius: 8px;
         }
 
-        /* BUTTONS (A, B, C, D...) */
-        .options { display: flex; gap: 6px; justify-content: flex-end; width: 100%; flex-wrap: wrap; }
+        /* BUTTONS */
+        .options { display: flex; gap: 8px; justify-content: flex-end; width: 100%; flex-wrap: wrap; }
 
         .option-btn {
-            width: 48px; height: 48px;
+            width: 50px; height: 50px;
             border-radius: 10px; border: 2px solid var(--border-color);
             background: #f8f8f8; display: flex; align-items: center; justify-content: center;
             font-weight: 700; font-size: 20px; cursor: pointer; color: #333;
@@ -65,9 +66,9 @@
         .option-btn:active { transform: scale(0.95); background: #eee; }
         .option-btn.selected { background-color: var(--accent-color); color: white; border-color: var(--accent-color); transform: scale(1.05); }
 
-        /* TEXT INPUTS (Yozma) */
+        /* TEXT INPUTS */
         .text-input {
-            width: 100%; padding: 14px;
+            width: 100%; padding: 12px;
             font-size: 20px; font-weight: bold;
             border: 2px solid #999; border-radius: 10px;
             text-transform: uppercase; /* Majburiy Katta Harf */
@@ -75,12 +76,15 @@
             background: #fff; color: #000;
         }
         .text-input:focus { border-color: var(--accent-color); outline: none; background: #f0f8ff; }
-        .text-input::placeholder { color: #bbb; font-size: 16px; font-weight: normal; }
+        .text-input::placeholder { color: #ccc; font-weight: normal; font-size: 16px; }
 
-        /* DOUBLE INPUT (44-savol uchun) */
-        .double-input-container { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 5px; }
+        /* DOUBLE INPUT (40-44 uchun) */
+        .double-input-container { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-top: 5px; }
         .input-row { display: flex; align-items: center; gap: 10px; }
-        .input-label { font-weight: 900; font-size: 20px; color: var(--accent-color); width: 30px; }
+        .input-label { 
+            font-weight: 900; font-size: 22px; color: var(--accent-color); 
+            width: 30px; text-align: center; 
+        }
 
         /* FOOTER */
         .footer { position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 100; max-width: 600px; margin: 0 auto; }
@@ -111,7 +115,7 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         tg.setHeaderColor('#ffffff'); 
-        tg.setBackgroundColor('#f2f2f2');
+        tg.setBackgroundColor('#f4f4f4');
         tg.enableClosingConfirmation();
 
         // Savollar sonini olish (Default 44 ta)
@@ -126,14 +130,14 @@
         for (let i = 1; i <= count; i++) {
             let row = document.createElement('div');
             row.className = 'question-card';
-            row.style.animationDelay = `${i * 0.02}s`; // Tezroq animatsiya
+            row.style.animationDelay = `${i * 0.015}s`;
 
             let header = document.createElement('div');
             header.className = 'card-header';
             
             let num = document.createElement('div');
             num.className = 'q-num';
-            num.innerText = i < 10 ? `0${i}` : i; // 01, 02 ko'rinishida
+            num.innerText = i < 10 ? `0${i}` : i; 
             
             let contentDiv = document.createElement('div');
             contentDiv.style.width = '100%';
@@ -141,23 +145,23 @@
             // ================== LOGIKA MARKAZI ==================
 
             if (i >= 1 && i <= 32) {
-                // 1 dan 32 gacha: A, B, C, D
+                // 1-32: A, B, C, D
                 renderOptions(i, ['A','B','C','D'], contentDiv);
             } 
             else if (i >= 33 && i <= 35) {
-                // 33 dan 35 gacha: A, B, C, D, E, F
+                // 33-35: A, B, C, D, E, F
                 renderOptions(i, ['A','B','C','D','E','F'], contentDiv);
             }
-            else if (i >= 36 && i <= 43) {
-                // 36 dan 43 gacha: YOZMA (Ochiq test)
+            else if (i >= 36 && i <= 39) {
+                // 36-39: Bitta yozma javob
                 renderTextInput(i, contentDiv);
             }
-            else if (i == 44) {
-                // 44-savol: Ikkita qism (a va b)
+            else if (i >= 40 && i <= 44) {
+                // 40-44: Ikkita yozma javob (a va b)
                 renderDoubleInput(i, contentDiv);
             }
-            // Agar savollar 44 tadan ko'p bo'lsa, qolganlari oddiy yozma bo'ladi
             else {
+                // Agar savol ko'payib ketsa, qolganiga bitta input
                 renderTextInput(i, contentDiv);
             }
 
@@ -171,7 +175,7 @@
 
         // --- FUNKSIYALAR ---
 
-        // 1. Variantli tugmalar chizish
+        // 1. Variantli tugmalar (A,B,C...)
         function renderOptions(idx, variants, parent) {
             let optsDiv = document.createElement('div');
             optsDiv.className = 'options';
@@ -191,41 +195,38 @@
             parent.appendChild(optsDiv);
         }
 
-        // 2. Yozma (Input) chizish
+        // 2. Bitta yozma input (36-39)
         function renderTextInput(idx, parent) {
             let input = document.createElement('input');
             input.type = 'text';
             input.className = 'text-input';
             input.placeholder = 'JAVOB...';
-            // Fokus bo'lganda klaviatura ochilishi uchun
             input.inputMode = 'text'; 
             
             input.oninput = (e) => {
-                // Avtomatik KATTA HARF ga o'tkazish
                 let val = e.target.value.toUpperCase().trim();
-                e.target.value = val; 
-                
+                e.target.value = val; // Ekranda ham darrov katta qilish
                 answers[idx-1] = val.length > 0 ? val : null;
                 updateProgress();
             };
             parent.appendChild(input);
         }
 
-        // 3. Ikkita input (44-savol)
+        // 3. Ikkita yozma input (40-44) -> a) va b)
         function renderDoubleInput(idx, parent) {
             let wrapper = document.createElement('div');
             wrapper.className = 'double-input-container';
             
             // a) qismi
             let rowA = document.createElement('div'); rowA.className = 'input-row';
-            let labelA = document.createElement('span'); labelA.className = 'input-label'; labelA.innerText = 'a';
+            let labelA = document.createElement('span'); labelA.className = 'input-label'; labelA.innerText = 'a)';
             let inputA = document.createElement('input'); 
             inputA.className = 'text-input'; inputA.placeholder = 'JAVOB A...'; inputA.id = `q${idx}_a`;
             rowA.appendChild(labelA); rowA.appendChild(inputA);
 
             // b) qismi
             let rowB = document.createElement('div'); rowB.className = 'input-row';
-            let labelB = document.createElement('span'); labelB.className = 'input-label'; labelB.innerText = 'b';
+            let labelB = document.createElement('span'); labelB.className = 'input-label'; labelB.innerText = 'b)';
             let inputB = document.createElement('input'); 
             inputB.className = 'text-input'; inputB.placeholder = 'JAVOB B...'; inputB.id = `q${idx}_b`;
             rowB.appendChild(labelB); rowB.appendChild(inputB);
@@ -238,13 +239,18 @@
                 let valA = document.getElementById(`q${idx}_a`).value.toUpperCase().trim();
                 let valB = document.getElementById(`q${idx}_b`).value.toUpperCase().trim();
                 
-                // Inputlarga yozilayotganda darhol katta harf qilish
                 document.getElementById(`q${idx}_a`).value = valA;
                 document.getElementById(`q${idx}_b`).value = valB;
 
+                // Ikkalasiyam to'ldirilgan bo'lsa javobni yozamiz
                 if (valA && valB) {
                     answers[idx-1] = `a)${valA} b)${valB}`;
-                } else {
+                } 
+                // Yoki bittasi to'ldirilgan bo'lsa ham yozib qo'yamiz (Admin o'zi hal qiladi)
+                else if (valA || valB) {
+                    answers[idx-1] = `a)${valA} b)${valB}`;
+                }
+                else {
                     answers[idx-1] = null;
                 }
                 updateProgress();
