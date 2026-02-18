@@ -5,311 +5,258 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Test Tizimi</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: var(--tg-theme-bg-color, #ffffff);
-            --text-color: var(--tg-theme-text-color, #000000);
-            --hint-color: var(--tg-theme-hint-color, #999999);
-            --button-color: var(--tg-theme-button-color, #3390ec);
-            --button-text-color: var(--tg-theme-button-text-color, #ffffff);
-            --secondary-bg: var(--tg-theme-secondary-bg-color, #f4f4f5);
-            --header-bg: var(--tg-theme-header-bg-color, #ffffff);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--secondary-bg);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent; 
-            padding-bottom: 80px; /* MainButton joyi uchun */
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 15px;
-        }
-
-        h3 {
-            text-align: center;
-            margin: 10px 0 20px 0;
-            color: var(--text-color);
-            font-weight: 600;
-        }
-
-        /* Admin Controls */
-        #admin-controls {
-            background-color: var(--bg-color);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        input[type="number"] {
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--hint-color);
-            background: var(--secondary-bg);
-            color: var(--text-color);
-            width: 80px;
-            text-align: center;
-            font-size: 16px;
-            outline: none;
-        }
-
-        input[type="number"]:focus {
-            border-color: var(--button-color);
-        }
-
-        .btn-generate {
-            background-color: var(--button-color);
-            color: var(--button-text-color);
-            border: none;
-            padding: 0 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
+        :root { --bg-color: #f4f4f4; --card-bg: #ffffff; --text-color: #000; --accent-color: #007aff; --success-color: #2b9816; --border-color: #d1d1d1; }
+        body { font-family: 'Roboto', sans-serif; background-color: var(--bg-color); margin: 0; padding-bottom: 120px; -webkit-tap-highlight-color: transparent; user-select: none; }
         
-        .btn-generate:active { opacity: 0.8; }
+        /* HEADER */
+        .header { position: fixed; top: 0; left: 0; right: 0; background: #fff; padding: 15px 20px; z-index: 100; border-bottom: 2px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .progress-info { display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #333; }
+        .progress-bar { height: 10px; background: #e0e0e0; border-radius: 20px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: var(--accent-color); transition: width 0.3s ease; }
 
-        /* Questions Grid */
-        .question-card {
-            background-color: var(--bg-color);
-            border-radius: 12px;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
+        /* ADMIN PANEL */
+        #admin-panel { padding: 20px; margin-top: 80px; text-align: center; display: none; }
+        .admin-input { padding: 15px; font-size: 18px; border-radius: 12px; border: 2px solid #ccc; width: 60%; text-align: center; margin-bottom: 10px; }
+        .admin-btn { padding: 15px 30px; background: var(--accent-color); color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; }
 
-        .q-number {
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--text-color);
-            min-width: 30px;
-        }
+        /* CONTENT */
+        #container { padding: 15px; margin-top: 90px; max-width: 600px; margin: 90px auto 0 auto; }
+        .question-card { background: var(--card-bg); border-radius: 14px; padding: 15px; margin-bottom: 15px; border: 1px solid #e0e0e0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); animation: fadeIn 0.3s ease forwards; }
+        .card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .q-num { font-size: 18px; font-weight: 900; color: #555; min-width: 35px; text-align: center; background: #f0f0f0; padding: 8px; border-radius: 8px; }
 
-        .options-container {
-            display: flex;
-            gap: 8px;
-            flex-grow: 1;
-            justify-content: flex-end;
-        }
+        /* OPTIONS */
+        .options { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-start; }
+        .option-btn { width: 45px; height: 45px; border-radius: 10px; border: 2px solid #e0e0e0; background: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; cursor: pointer; color: #333; transition: all 0.2s; }
+        .option-btn:active { transform: scale(0.95); }
+        .option-btn.selected { background-color: var(--accent-color); color: white; border-color: var(--accent-color); box-shadow: 0 4px 10px rgba(0,122,255,0.3); }
 
-        .option-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid var(--hint-color);
-            background: transparent;
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+        /* INPUTS */
+        .text-input { width: 100%; padding: 12px; font-size: 18px; font-weight: bold; border: 2px solid #ccc; border-radius: 10px; text-transform: uppercase; box-sizing: border-box; text-align: center; background: #fff; }
+        .text-input:focus { border-color: var(--accent-color); outline: none; }
+        
+        /* FOOTER */
+        .footer { position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 100; max-width: 600px; margin: 0 auto; }
+        #submitBtn { width: 100%; padding: 16px; background: var(--success-color); color: white; border: none; border-radius: 14px; font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(43, 152, 22, 0.4); transition: transform 0.2s; }
+        #submitBtn:active { transform: scale(0.96); }
 
-        /* Selected State */
-        .option-btn.selected {
-            background-color: var(--button-color);
-            border-color: var(--button-color);
-            color: var(--button-text-color);
-            transform: scale(1.05);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        /* Loading Animation */
         .hidden { display: none !important; }
-        
-        .fade-in { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h3 id="page-title">Test Tizimi</h3>
-
-        <div id="admin-controls" class="hidden">
-            <p style="margin: 0; color: var(--hint-color);">Savollar sonini kiriting:</p>
-            <div class="input-group">
-                <input type="number" id="q-count-input" placeholder="30" min="1" max="200">
-                <button class="btn-generate" id="generate-btn">Yaratish</button>
-            </div>
+    <div class="header" id="header-bar">
+        <div class="progress-info">
+            <span id="progress-text">0%</span>
+            <span id="count-text">0/0</span>
         </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
 
-        <div id="questions-list"></div>
+    <div id="admin-panel">
+        <h3>Savollar sonini kiriting:</h3>
+        <input type="number" id="admin-count-input" class="admin-input" placeholder="30" min="1" max="100">
+        <br>
+        <button class="admin-btn" onclick="startAdmin()">TEST YARATISH</button>
+    </div>
+
+    <div id="container"></div>
+
+    <div class="footer">
+        <button id="submitBtn" onclick="sendData()">YAKUNLASH</button>
     </div>
 
     <script>
-        // Telegram WebApp obyektini ishga tushirish
         const tg = window.Telegram.WebApp;
-        tg.expand(); // To'liq ekran qilish
+        tg.expand();
+        tg.enableClosingConfirmation();
 
-        // Ranglarni moslashtirish (Dark/Light mode)
-        document.documentElement.style.setProperty('--tg-theme-bg-color', tg.backgroundColor || '#ffffff');
-        document.documentElement.style.setProperty('--tg-theme-text-color', tg.textColor || '#000000');
-        document.documentElement.style.setProperty('--tg-theme-button-color', tg.buttonColor || '#3390ec');
-        document.documentElement.style.setProperty('--tg-theme-button-text-color', tg.buttonTextColor || '#ffffff');
-
-        // URL parametrlarini o'qish
+        // Parametrlarni olish
         const urlParams = new URLSearchParams(window.location.search);
         const mode = urlParams.get('mode'); // 'admin' yoki 'user'
         const countParam = parseInt(urlParams.get('count')) || 30;
+        const testType = urlParams.get('type') || 'dtm'; // 'dtm' yoki 'rash'
 
-        // Elementlar
-        const titleEl = document.getElementById('page-title');
-        const adminControls = document.getElementById('admin-controls');
-        const listContainer = document.getElementById('questions-list');
-        const generateBtn = document.getElementById('generate-btn');
-        const countInput = document.getElementById('q-count-input');
-
-        // Global o'zgaruvchilar
+        let answers = [];
         let totalQuestions = 0;
-        let answers = {}; // {1: 'A', 2: 'C', ...}
+        
+        const container = document.getElementById('container');
+        const adminPanel = document.getElementById('admin-panel');
+        const headerBar = document.getElementById('header-bar');
+        const submitBtn = document.getElementById('submitBtn');
 
-        // --- Logic ---
+        // Boshlash
+        if (mode === 'admin') {
+            headerBar.classList.add('hidden');
+            submitBtn.classList.add('hidden');
+            adminPanel.style.display = 'block';
+        } else {
+            // User rejimi
+            initTest(countParam);
+        }
 
-        function init() {
-            if (mode === 'admin') {
-                titleEl.innerText = "Yangi Test Yaratish";
-                adminControls.classList.remove('hidden');
-                tg.MainButton.setText("SAQLASH VA YUBORISH");
+        // Admin tugmasini bosganda
+        function startAdmin() {
+            const val = document.getElementById('admin-count-input').value;
+            if (val > 0) {
+                adminPanel.style.display = 'none';
+                headerBar.classList.remove('hidden');
+                submitBtn.classList.remove('hidden');
+                initTest(parseInt(val));
             } else {
-                titleEl.innerText = "Javoblarni belgilang";
-                totalQuestions = countParam;
-                renderQuestions(totalQuestions);
-                tg.MainButton.setText("TESTNI YAKUNLASH");
-                tg.MainButton.show();
+                tg.showAlert("Iltimos, son kiriting!");
             }
         }
 
-        // Admin: Grid yaratish tugmasi
-        generateBtn.addEventListener('click', () => {
-            const val = parseInt(countInput.value);
-            if (!val || val < 1) {
-                tg.showPopup({title: 'Xatolik', message: "Iltimos, savollar sonini to'g'ri kiriting!"});
-                return;
-            }
-            totalQuestions = val;
-            renderQuestions(totalQuestions);
-            adminControls.classList.add('hidden'); // Inputni berkitish
-            tg.MainButton.show(); // Telegram tugmasini chiqarish
-        });
-
-        // Savollarni chizish funksiyasi
-        function renderQuestions(n) {
-            listContainer.innerHTML = '';
-            answers = {}; // Reset
+        // Testni chizish
+        function initTest(n) {
+            totalQuestions = n;
+            answers = new Array(n).fill(null);
+            document.getElementById('count-text').innerText = `0/${n}`;
+            container.innerHTML = '';
 
             for (let i = 1; i <= n; i++) {
-                const card = document.createElement('div');
-                card.className = 'question-card fade-in';
-                card.style.animationDelay = `${i * 0.02}s`; // Chiroyli ketma-ket chiqish effekti
+                let row = document.createElement('div');
+                row.className = 'question-card';
+                row.style.animationDelay = `${Math.min(i * 0.05, 1.0)}s`; // Animatsiyani optimallashtirish
 
-                // Raqam
-                const numSpan = document.createElement('span');
-                numSpan.className = 'q-number';
-                numSpan.innerText = i + ".";
+                let header = document.createElement('div');
+                header.className = 'card-header';
 
-                // Variantlar
-                const optsDiv = document.createElement('div');
-                optsDiv.className = 'options-container';
-                
-                ['A', 'B', 'C', 'D'].forEach(opt => {
-                    const btn = document.createElement('div');
-                    btn.className = 'option-btn';
-                    btn.innerText = opt;
-                    btn.onclick = () => selectOption(i, opt, btn);
-                    optsDiv.appendChild(btn);
+                let num = document.createElement('div');
+                num.className = 'q-num';
+                num.innerText = i;
+
+                let contentDiv = document.createElement('div');
+                contentDiv.style.width = '100%';
+
+                // --- MANTIQ: QAYSI TURDAGI SAVOL CHIQSIN? ---
+                if (testType === 'dtm') {
+                    // DTM standarti: A, B, C, D
+                    renderOptions(i, ['A','B','C','D'], contentDiv);
+                } 
+                else if (testType === 'rash') {
+                    // RASH (Milliy sertifikat) standarti
+                    if (i <= 32) renderOptions(i, ['A','B','C','D'], contentDiv); // 1-32: Yopiq test
+                    else if (i <= 35) renderOptions(i, ['A','B','C','D','E','F'], contentDiv); // 33-35: 6 ta variant
+                    else if (i <= 39) renderTextInput(i, contentDiv); // 36-39: Yozma
+                    else if (i <= 44) renderDoubleInput(i, contentDiv); // 40-44: Ikkitalik yozma
+                    else renderTextInput(i, contentDiv); // Qo'shimcha bo'lsa
+                }
+                // Agar Fan1/Fan2 bo'lsa va oddiy bo'lsa
+                else {
+                    renderOptions(i, ['A','B','C','D'], contentDiv);
+                }
+
+                header.appendChild(num);
+                header.appendChild(contentDiv);
+                row.appendChild(header);
+                container.appendChild(row);
+            }
+        }
+
+        // Variantli savol (A, B, C...)
+        function renderOptions(idx, variants, parent) {
+            let optsDiv = document.createElement('div');
+            optsDiv.className = 'options';
+            variants.forEach(variant => {
+                let btn = document.createElement('div');
+                btn.className = 'option-btn';
+                btn.innerText = variant;
+                btn.onclick = () => {
+                    if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+                    // Boshqalarini o'chirish
+                    Array.from(optsDiv.children).forEach(c => c.classList.remove('selected'));
+                    // Tanlash
+                    btn.classList.add('selected');
+                    answers[idx-1] = variant;
+                    updateProgress();
+                };
+                optsDiv.appendChild(btn);
+            });
+            parent.appendChild(optsDiv);
+        }
+
+        // Yozma savol (Input)
+        function renderTextInput(idx, parent) {
+            let input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'text-input';
+            input.placeholder = 'JAVOB...';
+            input.oninput = (e) => {
+                let val = e.target.value.toUpperCase().trim();
+                answers[idx-1] = val.length > 0 ? val : null;
+                updateProgress();
+            };
+            parent.appendChild(input);
+        }
+
+        // Ikkitalik savol (a, b)
+        function renderDoubleInput(idx, parent) {
+            let wrapper = document.createElement('div');
+            wrapper.style.display = 'flex';
+            wrapper.style.flexDirection = 'column';
+            wrapper.style.gap = '8px';
+
+            let i1 = document.createElement('input'); i1.className = 'text-input'; i1.placeholder = 'a)...';
+            let i2 = document.createElement('input'); i2.className = 'text-input'; i2.placeholder = 'b)...';
+
+            const update = () => {
+                let v1 = i1.value.toUpperCase().trim();
+                let v2 = i2.value.toUpperCase().trim();
+                // Javob formati: "A)javob B)javob" yoki shunchaki birlashtiramiz
+                if(v1 || v2) answers[idx-1] = `${v1}|${v2}`; 
+                else answers[idx-1] = null;
+                updateProgress();
+            }
+            i1.oninput = update; i2.oninput = update;
+            
+            wrapper.appendChild(i1);
+            wrapper.appendChild(i2);
+            parent.appendChild(wrapper);
+        }
+
+        // Progress bar yangilash
+        function updateProgress() {
+            let solved = answers.filter(a => a !== null).length;
+            let percent = Math.round((solved / totalQuestions) * 100);
+            document.getElementById('progress-fill').style.width = `${percent}%`;
+            document.getElementById('progress-text').innerText = `${percent}%`;
+            document.getElementById('count-text').innerText = `${solved}/${totalQuestions}`;
+        }
+
+        // Yuborish
+        function sendData() {
+            let solved = answers.filter(a => a !== null).length;
+            let missed = totalQuestions - solved;
+            
+            if (missed > 0) {
+                tg.showPopup({
+                    title: 'Diqqat',
+                    message: `Siz ${missed} ta savolni belgilamadingiz. Baribir yuborasizmi?`,
+                    buttons: [
+                        {id: 'cancel', type: 'default', text: 'Yo\'q'},
+                        {id: 'ok', type: 'destructive', text: 'HA, YUBORISH'}
+                    ]
+                }, (btnId) => {
+                    if (btnId === 'ok') finalSend();
                 });
-
-                card.appendChild(numSpan);
-                card.appendChild(optsDiv);
-                listContainer.appendChild(card);
-                
-                answers[i] = null; // Default qiymat
-            }
-        }
-
-        // Variant tanlash
-        function selectOption(qIndex, value, element) {
-            // Vibratsiya (agar telefon podderjka qilsa)
-            if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
-
-            // Vizual o'zgarish
-            const parent = element.parentElement;
-            const siblings = parent.children;
-            for (let sib of siblings) {
-                sib.classList.remove('selected');
-            }
-            element.classList.add('selected');
-
-            // Ma'lumotni saqlash
-            answers[qIndex] = value;
-        }
-
-        // Telegram "MainButton" bosilganda
-        tg.MainButton.onClick(() => {
-            // Javoblarni arrayga aylantirish ['A', 'C', 'X', ...]
-            let resultList = [];
-            let missedCount = 0;
-
-            for (let i = 1; i <= totalQuestions; i++) {
-                const ans = answers[i];
-                if (!ans) missedCount++;
-                resultList.push(ans || "X");
-            }
-
-            // Tasdiqlash oynasi
-            let confirmMsg = "";
-            if (mode === 'admin') {
-                if (missedCount > 0) {
-                    tg.showPopup({title: "Diqqat", message: `Siz ${missedCount} ta savolga javob kiritmadingiz. Davom etaylikmi?`, buttons: [{type: "ok", id: "ok"}, {type: "cancel"}]}, (btnId) => {
-                        if (btnId === "ok") sendData(resultList);
-                    });
-                } else {
-                    sendData(resultList);
-                }
             } else {
-                // User rejimi
-                if (missedCount > 0) {
-                    tg.showPopup({title: "Ishonchingiz komilmi?", message: `Siz ${missedCount} ta savolni belgilamadingiz. Baribir yuborasizmi?`, buttons: [{type: "ok", id: "ok"}, {type: "cancel"}]}, (btnId) => {
-                        if (btnId === "ok") sendData(resultList);
-                    });
-                } else {
-                    sendData(resultList);
-                }
+                finalSend();
             }
-        });
+        }
 
-        function sendData(data) {
-            tg.sendData(JSON.stringify(data));
+        function finalSend() {
+            // Bo'sh joylarni 'X' bilan to'ldirish
+            let finalData = answers.map(a => a ? a : "X");
+            tg.sendData(JSON.stringify(finalData));
             tg.close();
         }
-
-        // Ilovani ishga tushirish
-        init();
 
     </script>
 </body>
