@@ -35,8 +35,13 @@
 
         /* INPUTS */
         .text-input { width: 100%; padding: 12px; font-size: 18px; font-weight: bold; border: 2px solid #ccc; border-radius: 10px; text-transform: uppercase; box-sizing: border-box; text-align: center; background: #fff; }
-        .text-input:focus { border-color: var(--accent-color); outline: none; }
+        .text-input:focus { border-color: var(--accent-color); outline: none; background: #f0f8ff; }
         
+        /* DOUBLE INPUT */
+        .double-input-container { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .input-row { display: flex; align-items: center; gap: 10px; }
+        .input-label { font-weight: 900; font-size: 20px; color: var(--accent-color); width: 30px; text-align: center; }
+
         /* FOOTER */
         .footer { position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 100; max-width: 600px; margin: 0 auto; }
         #submitBtn { width: 100%; padding: 16px; background: var(--success-color); color: white; border: none; border-radius: 14px; font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(43, 152, 22, 0.4); transition: transform 0.2s; }
@@ -79,7 +84,7 @@
         // Parametrlarni olish
         const urlParams = new URLSearchParams(window.location.search);
         const mode = urlParams.get('mode'); // 'admin' yoki 'user'
-        const countParam = parseInt(urlParams.get('count')) || 30;
+        const countParam = parseInt(urlParams.get('count')) || 44; // Default 44
         const testType = urlParams.get('type') || 'dtm'; // 'dtm' yoki 'rash'
 
         let answers = [];
@@ -123,33 +128,43 @@
             for (let i = 1; i <= n; i++) {
                 let row = document.createElement('div');
                 row.className = 'question-card';
-                row.style.animationDelay = `${Math.min(i * 0.05, 1.0)}s`; // Animatsiyani optimallashtirish
+                row.style.animationDelay = `${Math.min(i * 0.05, 1.0)}s`; 
 
                 let header = document.createElement('div');
                 header.className = 'card-header';
 
                 let num = document.createElement('div');
                 num.className = 'q-num';
-                num.innerText = i;
+                num.innerText = i < 10 ? `0${i}` : i;
 
                 let contentDiv = document.createElement('div');
                 contentDiv.style.width = '100%';
 
-                // --- MANTIQ: QAYSI TURDAGI SAVOL CHIQSIN? ---
-                if (testType === 'dtm') {
-                    // DTM standarti: A, B, C, D
-                    renderOptions(i, ['A','B','C','D'], contentDiv);
+                // --- LOGIKA: RASH MODELI ---
+                if (testType === 'rash') {
+                    if (i >= 1 && i <= 32) {
+                        // 1-32: A, B, C, D
+                        renderOptions(i, ['A','B','C','D'], contentDiv);
+                    } 
+                    else if (i >= 33 && i <= 35) {
+                        // 33-35: A, B, C, D, E, F
+                        renderOptions(i, ['A','B','C','D','E','F'], contentDiv);
+                    }
+                    else if (i >= 36 && i <= 39) {
+                        // 36-39: Bitta input (Yozma)
+                        renderTextInput(i, contentDiv);
+                    }
+                    else if (i >= 40 && i <= 44) {
+                        // 40-44: Ikkitalik input (a, b)
+                        renderDoubleInput(i, contentDiv);
+                    }
+                    else {
+                        // 44 dan ko'p bo'lsa standart input
+                        renderTextInput(i, contentDiv);
+                    }
                 } 
-                else if (testType === 'rash') {
-                    // RASH (Milliy sertifikat) standarti
-                    if (i <= 32) renderOptions(i, ['A','B','C','D'], contentDiv); // 1-32: Yopiq test
-                    else if (i <= 35) renderOptions(i, ['A','B','C','D','E','F'], contentDiv); // 33-35: 6 ta variant
-                    else if (i <= 39) renderTextInput(i, contentDiv); // 36-39: Yozma
-                    else if (i <= 44) renderDoubleInput(i, contentDiv); // 40-44: Ikkitalik yozma
-                    else renderTextInput(i, contentDiv); // Qo'shimcha bo'lsa
-                }
-                // Agar Fan1/Fan2 bo'lsa va oddiy bo'lsa
                 else {
+                    // DTM Standarti
                     renderOptions(i, ['A','B','C','D'], contentDiv);
                 }
 
@@ -170,9 +185,7 @@
                 btn.innerText = variant;
                 btn.onclick = () => {
                     if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
-                    // Boshqalarini o'chirish
                     Array.from(optsDiv.children).forEach(c => c.classList.remove('selected'));
-                    // Tanlash
                     btn.classList.add('selected');
                     answers[idx-1] = variant;
                     updateProgress();
@@ -182,7 +195,7 @@
             parent.appendChild(optsDiv);
         }
 
-        // Yozma savol (Input)
+        // Bitta inputli savol
         function renderTextInput(idx, parent) {
             let input = document.createElement('input');
             input.type = 'text';
@@ -190,38 +203,53 @@
             input.placeholder = 'JAVOB...';
             input.oninput = (e) => {
                 let val = e.target.value.toUpperCase().trim();
+                e.target.value = val;
                 answers[idx-1] = val.length > 0 ? val : null;
                 updateProgress();
             };
             parent.appendChild(input);
         }
 
-        // Ikkitalik savol (a, b)
+        // Ikkitalik inputli savol (a, b)
         function renderDoubleInput(idx, parent) {
             let wrapper = document.createElement('div');
-            wrapper.style.display = 'flex';
-            wrapper.style.flexDirection = 'column';
-            wrapper.style.gap = '8px';
+            wrapper.className = 'double-input-container';
 
-            let i1 = document.createElement('input'); i1.className = 'text-input'; i1.placeholder = 'a)...';
-            let i2 = document.createElement('input'); i2.className = 'text-input'; i2.placeholder = 'b)...';
+            // A qismi
+            let rowA = document.createElement('div'); rowA.className = 'input-row';
+            let labelA = document.createElement('div'); labelA.className = 'input-label'; labelA.innerText = 'a)';
+            let inputA = document.createElement('input'); inputA.className = 'text-input'; inputA.placeholder = '...';
+            rowA.appendChild(labelA); rowA.appendChild(inputA);
+
+            // B qismi
+            let rowB = document.createElement('div'); rowB.className = 'input-row';
+            let labelB = document.createElement('div'); labelB.className = 'input-label'; labelB.innerText = 'b)';
+            let inputB = document.createElement('input'); inputB.className = 'text-input'; inputB.placeholder = '...';
+            rowB.appendChild(labelB); rowB.appendChild(inputB);
 
             const update = () => {
-                let v1 = i1.value.toUpperCase().trim();
-                let v2 = i2.value.toUpperCase().trim();
-                // Javob formati: "A)javob B)javob" yoki shunchaki birlashtiramiz
-                if(v1 || v2) answers[idx-1] = `${v1}|${v2}`; 
+                let vA = inputA.value.toUpperCase().trim();
+                let vB = inputB.value.toUpperCase().trim();
+                inputA.value = vA;
+                inputB.value = vB;
+                
+                // Javobni "A)JAVOB A B)JAVOB B" formatida yuboramiz yoki "|" bilan ajratamiz
+                // Bot tushunishi oson bo'lishi uchun "|" ishlatamiz: "JAVA|PYTHON"
+                if (vA || vB) answers[idx-1] = `${vA}|${vB}`;
                 else answers[idx-1] = null;
+                
                 updateProgress();
             }
-            i1.oninput = update; i2.oninput = update;
+
+            inputA.oninput = update;
+            inputB.oninput = update;
             
-            wrapper.appendChild(i1);
-            wrapper.appendChild(i2);
+            wrapper.appendChild(rowA);
+            wrapper.appendChild(rowB);
             parent.appendChild(wrapper);
         }
 
-        // Progress bar yangilash
+        // Progress bar
         function updateProgress() {
             let solved = answers.filter(a => a !== null).length;
             let percent = Math.round((solved / totalQuestions) * 100);
@@ -252,7 +280,6 @@
         }
 
         function finalSend() {
-            // Bo'sh joylarni 'X' bilan to'ldirish
             let finalData = answers.map(a => a ? a : "X");
             tg.sendData(JSON.stringify(finalData));
             tg.close();
