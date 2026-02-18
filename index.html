@@ -3,70 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Test Tizimi</title>
+    <title>Milliy Sertifikat Test</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-color: #f4f4f4; --card-bg: #ffffff; --text-color: #000; --accent-color: #007aff; --success-color: #2b9816; --border-color: #d1d1d1; }
-        body { font-family: 'Roboto', sans-serif; background-color: var(--bg-color); margin: 0; padding-bottom: 120px; -webkit-tap-highlight-color: transparent; user-select: none; }
+        :root {
+            --bg-color: var(--tg-theme-bg-color, #f4f4f4);
+            --text-color: var(--tg-theme-text-color, #000000);
+            --card-bg: var(--tg-theme-secondary-bg-color, #ffffff);
+            --accent-color: var(--tg-theme-button-color, #007aff);
+            --accent-text: var(--tg-theme-button-text-color, #ffffff);
+            --border-color: #d1d1d1;
+        }
+        body { font-family: 'Roboto', sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding-bottom: 100px; -webkit-tap-highlight-color: transparent; user-select: none; }
         
         /* HEADER */
-        .header { position: fixed; top: 0; left: 0; right: 0; background: #fff; padding: 15px 20px; z-index: 100; border-bottom: 2px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .progress-info { display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #333; }
-        .progress-bar { height: 10px; background: #e0e0e0; border-radius: 20px; overflow: hidden; }
+        .header { position: fixed; top: 0; left: 0; right: 0; background: var(--card-bg); padding: 10px 20px; z-index: 100; border-bottom: 1px solid var(--border-color); }
+        .progress-info { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 5px; font-size: 14px; }
+        .progress-bar { height: 6px; background: #e0e0e0; border-radius: 10px; overflow: hidden; }
         .progress-fill { height: 100%; width: 0%; background: var(--accent-color); transition: width 0.3s ease; }
 
         /* ADMIN PANEL */
-        #admin-panel { padding: 20px; margin-top: 80px; text-align: center; display: none; }
-        .admin-input { padding: 15px; font-size: 18px; border-radius: 12px; border: 2px solid #ccc; width: 60%; text-align: center; margin-bottom: 10px; }
-        .admin-btn { padding: 15px 30px; background: var(--accent-color); color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; }
+        #admin-panel { padding: 20px; margin-top: 60px; text-align: center; display: none; }
+        .admin-input { padding: 12px; font-size: 18px; border-radius: 8px; border: 1px solid var(--border-color); width: 80px; text-align: center; }
+        .admin-btn { margin-top: 10px; padding: 12px 25px; background: var(--accent-color); color: var(--accent-text); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* CONTENT */
-        #container { padding: 15px; margin-top: 90px; max-width: 600px; margin: 90px auto 0 auto; }
-        .question-card { background: var(--card-bg); border-radius: 14px; padding: 15px; margin-bottom: 15px; border: 1px solid #e0e0e0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); animation: fadeIn 0.3s ease forwards; }
-        .card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
-        .q-num { font-size: 18px; font-weight: 900; color: #555; min-width: 35px; text-align: center; background: #f0f0f0; padding: 8px; border-radius: 8px; }
-
-        /* OPTIONS */
-        .options { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-start; }
-        .option-btn { width: 45px; height: 45px; border-radius: 10px; border: 2px solid #e0e0e0; background: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; cursor: pointer; color: #333; transition: all 0.2s; }
-        .option-btn:active { transform: scale(0.95); }
-        .option-btn.selected { background-color: var(--accent-color); color: white; border-color: var(--accent-color); box-shadow: 0 4px 10px rgba(0,122,255,0.3); }
+        /* QUESTIONS */
+        #container { padding: 15px; margin-top: 60px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .question-card { background: var(--card-bg); border-radius: 12px; padding: 12px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 10px; }
+        .card-header { display: flex; align-items: center; gap: 10px; }
+        .q-num { background: #eee; color: #333; font-weight: 900; padding: 6px 10px; border-radius: 6px; min-width: 25px; text-align: center; }
+        
+        /* OPTIONS A,B,C... */
+        .options { display: flex; gap: 8px; flex-wrap: wrap; }
+        .option-btn { width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .option-btn.selected { background-color: var(--accent-color); color: var(--accent-text); border-color: var(--accent-color); }
 
         /* INPUTS */
-        .text-input { width: 100%; padding: 12px; font-size: 18px; font-weight: bold; border: 2px solid #ccc; border-radius: 10px; text-transform: uppercase; box-sizing: border-box; text-align: center; background: #fff; }
-        .text-input:focus { border-color: var(--accent-color); outline: none; background: #f0f8ff; }
-        
-        /* DOUBLE INPUT */
-        .double-input-container { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .input-row { display: flex; align-items: center; gap: 10px; }
-        .input-label { font-weight: 900; font-size: 20px; color: var(--accent-color); width: 30px; text-align: center; }
+        .text-input { width: 100%; padding: 10px; font-size: 16px; font-weight: 600; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; text-transform: uppercase; background: var(--bg-color); color: var(--text-color); }
+        .text-input:focus { border-color: var(--accent-color); outline: none; }
+
+        /* DOUBLE INPUT (a, b) */
+        .double-row { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
+        .double-label { font-weight: bold; color: var(--accent-color); width: 20px; }
 
         /* FOOTER */
-        .footer { position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 100; max-width: 600px; margin: 0 auto; }
-        #submitBtn { width: 100%; padding: 16px; background: var(--success-color); color: white; border: none; border-radius: 14px; font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(43, 152, 22, 0.4); transition: transform 0.2s; }
-        #submitBtn:active { transform: scale(0.96); }
-
+        .footer { position: fixed; bottom: 20px; left: 0; right: 0; padding: 0 20px; max-width: 600px; margin: 0 auto; pointer-events: none; }
+        #submitBtn { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; pointer-events: auto; box-shadow: 0 4px 10px rgba(40,167,69,0.3); display: none; }
+        
         .hidden { display: none !important; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div class="header" id="header-bar">
-        <div class="progress-info">
-            <span id="progress-text">0%</span>
-            <span id="count-text">0/0</span>
-        </div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
-        </div>
+        <div class="progress-info"><span id="prog-txt">0%</span><span id="count-txt">0/44</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
     </div>
 
     <div id="admin-panel">
         <h3>Savollar sonini kiriting:</h3>
-        <input type="number" id="admin-count-input" class="admin-input" placeholder="30" min="1" max="100">
-        <br>
+        <input type="number" id="admin-count" class="admin-input" value="44">
         <button class="admin-btn" onclick="startAdmin()">TEST YARATISH</button>
     </div>
 
@@ -81,210 +78,160 @@
         tg.expand();
         tg.enableClosingConfirmation();
 
-        // Parametrlarni olish
+        // Ranglarni Telegramdan olish
+        document.documentElement.style.setProperty('--bg-color', tg.backgroundColor || '#f4f4f4');
+        document.documentElement.style.setProperty('--card-bg', tg.secondaryBackgroundColor || '#ffffff');
+        document.documentElement.style.setProperty('--text-color', tg.textColor || '#000000');
+        document.documentElement.style.setProperty('--accent-color', tg.buttonColor || '#007aff');
+        document.documentElement.style.setProperty('--accent-text', tg.buttonTextColor || '#ffffff');
+
         const urlParams = new URLSearchParams(window.location.search);
-        const mode = urlParams.get('mode'); // 'admin' yoki 'user'
-        const countParam = parseInt(urlParams.get('count')) || 44; // Default 44
-        const testType = urlParams.get('type') || 'dtm'; // 'dtm' yoki 'rash'
+        const mode = urlParams.get('mode'); 
+        const countParam = parseInt(urlParams.get('count')) || 44;
+        const testType = urlParams.get('type') || 'dtm';
 
         let answers = [];
-        let totalQuestions = 0;
+        let totalQuestions = 44;
         
+        // Elementlar
         const container = document.getElementById('container');
         const adminPanel = document.getElementById('admin-panel');
         const headerBar = document.getElementById('header-bar');
         const submitBtn = document.getElementById('submitBtn');
 
-        // Boshlash
         if (mode === 'admin') {
             headerBar.classList.add('hidden');
-            submitBtn.classList.add('hidden');
             adminPanel.style.display = 'block';
         } else {
-            // User rejimi
             initTest(countParam);
         }
 
-        // Admin tugmasini bosganda
         function startAdmin() {
-            const val = document.getElementById('admin-count-input').value;
+            const val = parseInt(document.getElementById('admin-count').value);
             if (val > 0) {
                 adminPanel.style.display = 'none';
                 headerBar.classList.remove('hidden');
-                submitBtn.classList.remove('hidden');
-                initTest(parseInt(val));
-            } else {
-                tg.showAlert("Iltimos, son kiriting!");
+                initTest(val);
             }
         }
 
-        // Testni chizish
         function initTest(n) {
             totalQuestions = n;
             answers = new Array(n).fill(null);
-            document.getElementById('count-text').innerText = `0/${n}`;
+            updateUI();
+            submitBtn.style.display = 'block';
+
             container.innerHTML = '';
-
             for (let i = 1; i <= n; i++) {
-                let row = document.createElement('div');
-                row.className = 'question-card';
-                row.style.animationDelay = `${Math.min(i * 0.05, 1.0)}s`; 
-
+                let card = document.createElement('div');
+                card.className = 'question-card';
+                
                 let header = document.createElement('div');
                 header.className = 'card-header';
+                header.innerHTML = `<div class="q-num">${i}</div>`;
+                
+                let content = document.createElement('div');
+                content.style.width = '100%';
 
-                let num = document.createElement('div');
-                num.className = 'q-num';
-                num.innerText = i < 10 ? `0${i}` : i;
-
-                let contentDiv = document.createElement('div');
-                contentDiv.style.width = '100%';
-
-                // --- LOGIKA: RASH MODELI ---
+                // --- MANTIQ (RASH MODELI) ---
                 if (testType === 'rash') {
-                    if (i >= 1 && i <= 32) {
-                        // 1-32: A, B, C, D
-                        renderOptions(i, ['A','B','C','D'], contentDiv);
-                    } 
-                    else if (i >= 33 && i <= 35) {
-                        // 33-35: A, B, C, D, E, F
-                        renderOptions(i, ['A','B','C','D','E','F'], contentDiv);
-                    }
-                    else if (i >= 36 && i <= 39) {
-                        // 36-39: Bitta input (Yozma)
-                        renderTextInput(i, contentDiv);
-                    }
-                    else if (i >= 40 && i <= 44) {
-                        // 40-44: Ikkitalik input (a, b)
-                        renderDoubleInput(i, contentDiv);
-                    }
-                    else {
-                        // 44 dan ko'p bo'lsa standart input
-                        renderTextInput(i, contentDiv);
-                    }
-                } 
-                else {
-                    // DTM Standarti
-                    renderOptions(i, ['A','B','C','D'], contentDiv);
+                    if (i <= 32) renderOptions(i, ['A','B','C','D'], content);
+                    else if (i <= 35) renderOptions(i, ['A','B','C','D','E','F'], content);
+                    else if (i <= 39) renderInput(i, content);
+                    else if (i <= 44) renderDoubleInput(i, content);
+                    else renderInput(i, content);
+                } else {
+                    renderOptions(i, ['A','B','C','D'], content);
                 }
 
-                header.appendChild(num);
-                header.appendChild(contentDiv);
-                row.appendChild(header);
-                container.appendChild(row);
+                card.appendChild(header);
+                card.appendChild(content);
+                container.appendChild(card);
             }
         }
 
-        // Variantli savol (A, B, C...)
-        function renderOptions(idx, variants, parent) {
-            let optsDiv = document.createElement('div');
-            optsDiv.className = 'options';
-            variants.forEach(variant => {
+        function renderOptions(idx, opts, parent) {
+            let div = document.createElement('div');
+            div.className = 'options';
+            opts.forEach(opt => {
                 let btn = document.createElement('div');
                 btn.className = 'option-btn';
-                btn.innerText = variant;
+                btn.innerText = opt;
                 btn.onclick = () => {
                     if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
-                    Array.from(optsDiv.children).forEach(c => c.classList.remove('selected'));
+                    Array.from(div.children).forEach(c => c.classList.remove('selected'));
                     btn.classList.add('selected');
-                    answers[idx-1] = variant;
-                    updateProgress();
+                    answers[idx-1] = opt;
+                    updateUI();
                 };
-                optsDiv.appendChild(btn);
+                div.appendChild(btn);
             });
-            parent.appendChild(optsDiv);
+            parent.appendChild(div);
         }
 
-        // Bitta inputli savol
-        function renderTextInput(idx, parent) {
-            let input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'text-input';
-            input.placeholder = 'JAVOB...';
-            input.oninput = (e) => {
+        function renderInput(idx, parent) {
+            let inp = document.createElement('input');
+            inp.type = 'text'; inp.className = 'text-input'; inp.placeholder = 'Javob...';
+            inp.oninput = (e) => {
                 let val = e.target.value.toUpperCase().trim();
-                e.target.value = val;
                 answers[idx-1] = val.length > 0 ? val : null;
-                updateProgress();
+                updateUI();
             };
-            parent.appendChild(input);
+            parent.appendChild(inp);
         }
 
-        // Ikkitalik inputli savol (a, b)
         function renderDoubleInput(idx, parent) {
-            let wrapper = document.createElement('div');
-            wrapper.className = 'double-input-container';
+            // A input
+            let rowA = document.createElement('div'); rowA.className = 'double-row';
+            rowA.innerHTML = `<span class="double-label">a)</span>`;
+            let inpA = document.createElement('input'); inpA.className = 'text-input'; 
+            rowA.appendChild(inpA);
 
-            // A qismi
-            let rowA = document.createElement('div'); rowA.className = 'input-row';
-            let labelA = document.createElement('div'); labelA.className = 'input-label'; labelA.innerText = 'a)';
-            let inputA = document.createElement('input'); inputA.className = 'text-input'; inputA.placeholder = '...';
-            rowA.appendChild(labelA); rowA.appendChild(inputA);
+            // B input
+            let rowB = document.createElement('div'); rowB.className = 'double-row';
+            rowB.innerHTML = `<span class="double-label">b)</span>`;
+            let inpB = document.createElement('input'); inpB.className = 'text-input'; 
+            rowB.appendChild(inpB);
 
-            // B qismi
-            let rowB = document.createElement('div'); rowB.className = 'input-row';
-            let labelB = document.createElement('div'); labelB.className = 'input-label'; labelB.innerText = 'b)';
-            let inputB = document.createElement('input'); inputB.className = 'text-input'; inputB.placeholder = '...';
-            rowB.appendChild(labelB); rowB.appendChild(inputB);
+            parent.appendChild(rowA); parent.appendChild(rowB);
 
             const update = () => {
-                let vA = inputA.value.toUpperCase().trim();
-                let vB = inputB.value.toUpperCase().trim();
-                inputA.value = vA;
-                inputB.value = vB;
-                
-                // Javobni "A)JAVOB A B)JAVOB B" formatida yuboramiz yoki "|" bilan ajratamiz
-                // Bot tushunishi oson bo'lishi uchun "|" ishlatamiz: "JAVA|PYTHON"
+                let vA = inpA.value.toUpperCase().trim();
+                let vB = inpB.value.toUpperCase().trim();
+                // Botga "JAVOB_A|JAVOB_B" formatida boradi
                 if (vA || vB) answers[idx-1] = `${vA}|${vB}`;
                 else answers[idx-1] = null;
-                
-                updateProgress();
-            }
-
-            inputA.oninput = update;
-            inputB.oninput = update;
-            
-            wrapper.appendChild(rowA);
-            wrapper.appendChild(rowB);
-            parent.appendChild(wrapper);
+                updateUI();
+            };
+            inpA.oninput = update; inpB.oninput = update;
         }
 
-        // Progress bar
-        function updateProgress() {
+        function updateUI() {
             let solved = answers.filter(a => a !== null).length;
-            let percent = Math.round((solved / totalQuestions) * 100);
-            document.getElementById('progress-fill').style.width = `${percent}%`;
-            document.getElementById('progress-text').innerText = `${percent}%`;
-            document.getElementById('count-text').innerText = `${solved}/${totalQuestions}`;
+            let pct = Math.round((solved / totalQuestions) * 100);
+            document.getElementById('prog-fill').style.width = `${pct}%`;
+            document.getElementById('prog-txt').innerText = `${pct}%`;
+            document.getElementById('count-txt').innerText = `${solved}/${totalQuestions}`;
         }
 
-        // Yuborish
         function sendData() {
             let solved = answers.filter(a => a !== null).length;
-            let missed = totalQuestions - solved;
-            
-            if (missed > 0) {
+            if (solved < totalQuestions) {
                 tg.showPopup({
                     title: 'Diqqat',
-                    message: `Siz ${missed} ta savolni belgilamadingiz. Baribir yuborasizmi?`,
-                    buttons: [
-                        {id: 'cancel', type: 'default', text: 'Yo\'q'},
-                        {id: 'ok', type: 'destructive', text: 'HA, YUBORISH'}
-                    ]
-                }, (btnId) => {
-                    if (btnId === 'ok') finalSend();
-                });
+                    message: `${totalQuestions - solved} ta savol qolib ketdi. Yuborasizmi?`,
+                    buttons: [{id:'ok', type:'destructive', text:'HA'}, {id:'no', text:'YO\'Q'}]
+                }, (btn) => { if (btn === 'ok') finalSend(); });
             } else {
                 finalSend();
             }
         }
 
         function finalSend() {
-            let finalData = answers.map(a => a ? a : "X");
-            tg.sendData(JSON.stringify(finalData));
+            let data = answers.map(a => a ? a : "X");
+            tg.sendData(JSON.stringify(data));
             tg.close();
         }
-
     </script>
 </body>
 </html>
