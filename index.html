@@ -8,13 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: var(--tg-theme-bg-color, #f4f4f4);
-            --text-color: var(--tg-theme-text-color, #000000);
-            --card-bg: var(--tg-theme-secondary-bg-color, #ffffff);
-            --accent-color: var(--tg-theme-button-color, #007aff);
-            --accent-text: var(--tg-theme-button-text-color, #ffffff);
-            --border-color: #d1d1d1;
-            --success-color: #28a745;
+            /* Rasmga asoslangan ranglar */
+            --bg-color: #121b22; /* To'q fon */
+            --card-bg: #ffffff; /* Oq kartochka */
+            --text-main: #000000;
+            --btn-dark: #1f2937; /* Qora variantlar */
+            --btn-selected: #007aff; /* Tanlanganda ko'k */
+            --btn-success: #28a745; /* Yashil yakunlash */
+            --num-bg: #f3f4f6; /* Raqam foni */
         }
         
         * { box-sizing: border-box; }
@@ -22,118 +23,144 @@
         body { 
             font-family: 'Roboto', sans-serif; 
             background-color: var(--bg-color); 
-            color: var(--text-color); 
+            color: var(--text-main); 
             margin: 0; 
-            padding-bottom: 100px; 
+            padding-bottom: 90px; /* Footer uchun joy */
             -webkit-tap-highlight-color: transparent; 
             user-select: none; 
         }
         
-        /* HEADER */
+        /* HEADER - Rasmga mos */
         .header { 
             position: fixed; top: 0; left: 0; right: 0; 
-            background: var(--card-bg); 
+            background: #ffffff; 
             padding: 10px 20px; 
             z-index: 100; 
-            border-bottom: 1px solid var(--border-color); 
+            border-bottom: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .progress-info { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 5px; font-size: 14px; }
+        
+        .header-title {
+            text-align: center;
+            font-weight: 700;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .progress-info { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 5px; font-size: 14px; color: #000; }
         .progress-bar { height: 6px; background: #e0e0e0; border-radius: 10px; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; background: var(--accent-color); transition: width 0.3s ease; }
+        .progress-fill { height: 100%; width: 0%; background: var(--btn-selected); transition: width 0.3s ease; }
 
         /* ADMIN PANEL */
         #admin-panel { 
             padding: 20px; 
-            margin-top: 80px; 
+            margin-top: 100px; 
             text-align: center; 
             display: none; 
+            background: #fff;
+            border-radius: 15px;
+            margin-left: 20px; margin-right: 20px;
         }
-        .admin-title { font-size: 18px; margin-bottom: 15px; font-weight: bold; }
         .admin-input { 
-            padding: 12px; font-size: 18px; 
-            border-radius: 8px; border: 1px solid var(--border-color); 
+            padding: 10px; font-size: 18px; 
+            border-radius: 8px; border: 1px solid #ccc; 
             width: 100px; text-align: center; 
-            background: var(--card-bg); color: var(--text-color);
         }
         .admin-btn { 
-            margin-top: 15px; padding: 12px 25px; 
-            background: var(--accent-color); color: var(--accent-text); 
-            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; 
+            margin-top: 10px; padding: 10px 20px; 
+            background: var(--btn-selected); color: #fff; 
+            border: none; border-radius: 8px; font-weight: bold; 
         }
 
         /* QUESTIONS CONTAINER */
         #container { 
             padding: 15px; 
-            margin-top: 70px; 
+            margin-top: 80px; /* Header balandligi */
             max-width: 600px; 
             margin-left: auto; margin-right: auto; 
         }
         
+        /* SAVOL KARTOCHKASI - RASMGA MOS */
         .question-card { 
             background: var(--card-bg); 
-            border-radius: 12px; 
-            padding: 15px; 
-            margin-bottom: 15px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-            border: 1px solid var(--border-color);
-            display: flex; flex-direction: column; gap: 10px; 
+            border-radius: 16px; /* Yumaloq burchaklar */
+            padding: 12px 15px; 
+            margin-bottom: 12px; 
+            display: flex; 
+            align-items: center; /* O'rtaga tekislash */
+            gap: 15px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
             animation: fadeIn 0.3s ease forwards;
         }
 
-        .card-header { display: flex; align-items: center; gap: 12px; }
+        /* RAQAM BLOKI */
         .q-num { 
-            background: #eee; color: #333; 
+            background: var(--num-bg); 
+            color: #333; 
             font-weight: 900; font-size: 16px;
-            padding: 8px 12px; border-radius: 8px; 
-            min-width: 40px; text-align: center; 
+            width: 40px; height: 40px;
+            border-radius: 8px; 
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* JAVOB VARIANTLARI BLOKI */
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            justify-content: flex-end; /* O'ngga taqaladi */
         }
         
-        /* OPTIONS GRID */
-        .options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .options { display: flex; gap: 8px; }
+        
+        /* TUGMALAR (A, B, C, D) - QORA */
         .option-btn { 
-            width: 42px; height: 42px; 
-            border-radius: 10px; border: 1px solid var(--border-color); 
+            width: 40px; height: 40px; 
+            border-radius: 8px; 
+            background: var(--btn-dark); 
+            color: #ffffff;
             display: flex; align-items: center; justify-content: center; 
-            font-weight: 700; cursor: pointer; transition: 0.15s; 
-            background: var(--bg-color); color: var(--text-color);
+            font-weight: 700; cursor: pointer; transition: 0.1s; 
+            font-size: 14px;
         }
+        .option-btn:active { transform: scale(0.95); }
         .option-btn.selected { 
-            background-color: var(--accent-color); 
-            color: var(--accent-text); 
-            border-color: var(--accent-color); 
-            transform: scale(1.05);
+            background-color: var(--btn-selected); 
+            color: #fff; 
         }
 
-        /* TEXT INPUTS */
+        /* TEXT INPUTS (36-44 savollar uchun) */
         .text-input { 
-            width: 100%; padding: 12px; 
-            font-size: 16px; font-weight: 600; 
-            border: 1px solid var(--border-color); 
+            width: 100%; padding: 10px; 
+            font-size: 16px; font-weight: 700; 
+            border: 2px solid #eee; 
             border-radius: 8px; 
             text-transform: uppercase; 
-            background: var(--bg-color); color: var(--text-color); 
-            outline: none;
+            background: #f9f9f9; color: #000; 
+            outline: none; text-align: center;
         }
-        .text-input:focus { border-color: var(--accent-color); }
+        .text-input:focus { border-color: var(--btn-selected); background: #fff; }
 
         /* DOUBLE INPUT (a, b) */
-        .double-container { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .double-row { display: flex; align-items: center; gap: 10px; }
-        .double-label { font-weight: 900; color: var(--accent-color); font-size: 18px; width: 25px; }
+        .double-container { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+        .double-row { display: flex; align-items: center; gap: 8px; }
+        .double-label { font-weight: 900; color: var(--btn-selected); font-size: 16px; width: 20px; }
 
-        /* FOOTER BUTTON */
+        /* FOOTER BUTTON - YASHIL */
         .footer { 
-            position: fixed; bottom: 20px; left: 0; right: 0; 
-            padding: 0 20px; max-width: 600px; margin: 0 auto; 
-            pointer-events: none; 
+            position: fixed; bottom: 15px; left: 15px; right: 15px; 
+            max-width: 600px; margin: 0 auto; 
+            pointer-events: none; z-index: 101;
         }
         #submitBtn { 
-            width: 100%; padding: 16px; 
-            background: var(--success-color); color: white; 
+            width: 100%; padding: 15px; 
+            background: var(--btn-success); color: white; 
             border: none; border-radius: 12px; 
-            font-size: 18px; font-weight: bold; 
+            font-size: 18px; font-weight: 900; text-transform: uppercase;
             cursor: pointer; pointer-events: auto; 
-            box-shadow: 0 4px 15px rgba(40,167,69,0.3); 
+            box-shadow: 0 4px 10px rgba(40,167,69,0.4); 
             display: none; 
         }
         #submitBtn:active { transform: scale(0.98); }
@@ -145,12 +172,13 @@
 <body>
 
     <div class="header" id="header-bar">
+        <div class="header-title">AKBAR XAMIDOV RASH BOTI</div>
         <div class="progress-info"><span id="prog-txt">0%</span><span id="count-txt">0/44</span></div>
         <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
     </div>
 
     <div id="admin-panel">
-        <div class="admin-title">Savollar sonini kiriting:</div>
+        <div style="margin-bottom:10px; font-weight:bold; color:#000;">Savollar soni:</div>
         <input type="number" id="admin-count" class="admin-input" value="44">
         <br>
         <button class="admin-btn" onclick="startAdmin()">TEST YARATISH</button>
@@ -167,23 +195,15 @@
         tg.expand();
         tg.enableClosingConfirmation();
 
-        // Telegram ranglarini o'qib olish
-        document.documentElement.style.setProperty('--bg-color', tg.backgroundColor || '#f4f4f4');
-        document.documentElement.style.setProperty('--card-bg', tg.secondaryBackgroundColor || '#ffffff');
-        document.documentElement.style.setProperty('--text-color', tg.textColor || '#000000');
-        document.documentElement.style.setProperty('--accent-color', tg.buttonColor || '#007aff');
-        document.documentElement.style.setProperty('--accent-text', tg.buttonTextColor || '#ffffff');
-
-        // URL parametrlarini olish
+        // Ranglarni majburiy o'rnatamiz (Rasmga moslash uchun)
+        // Telegram temasini ignor qilamiz, chunki rasmda aniq dizayn bor.
+        
         const urlParams = new URLSearchParams(window.location.search);
-        const mode = urlParams.get('mode'); // 'admin' yoki 'user'
+        const mode = urlParams.get('mode'); 
         const countParam = parseInt(urlParams.get('count')) || 44;
-        let initialTestType = urlParams.get('type'); 
+        let testType = urlParams.get('type');
 
-        // Agar user rejimida bo'lsa va type berilmagan bo'lsa
-        if (!initialTestType && countParam === 44) {
-            initialTestType = 'rash';
-        }
+        if (!testType && countParam === 44) testType = 'rash';
 
         let answers = [];
         let totalQuestions = 44;
@@ -193,36 +213,28 @@
         const headerBar = document.getElementById('header-bar');
         const submitBtn = document.getElementById('submitBtn');
 
-        // Boshlash logikasi
+        // Admin yoki User rejimi
         if (mode === 'admin') {
             headerBar.classList.add('hidden');
             adminPanel.style.display = 'block';
+            document.body.style.backgroundColor = "#fff"; // Admin panel oq fonda chiroyli ko'rinishi uchun
         } else {
-            // User rejimida darhol testni chizamiz
-            initTest(countParam, initialTestType || 'dtm');
+            initTest(countParam, testType || 'dtm');
         }
 
-        // Admin "Test Yaratish" tugmasini bossa
         function startAdmin() {
             const val = parseInt(document.getElementById('admin-count').value);
             if (val > 0) {
-                let typeToUse = 'dtm';
-                // AGAR ADMIN 44 KIRITSA, AVTOMATIK RASH REJIMIGA O'TADI
-                if (val === 44) {
-                    typeToUse = 'rash';
-                }
-
+                let typeToUse = val === 44 ? 'rash' : 'dtm';
                 adminPanel.style.display = 'none';
                 headerBar.classList.remove('hidden');
-                
-                // Funksiyaga son va turni aniq qilib yuboramiz
+                document.body.style.backgroundColor = "#121b22"; // Test boshlanganda fon qorayadi
                 initTest(val, typeToUse);
             } else {
                 tg.showAlert("Son kiriting!");
             }
         }
 
-        // Testni ekranga chizish
         function initTest(n, type) {
             totalQuestions = n;
             answers = new Array(n).fill(null);
@@ -233,54 +245,35 @@
             for (let i = 1; i <= n; i++) {
                 let card = document.createElement('div');
                 card.className = 'question-card';
-                card.style.animationDelay = `${Math.min(i * 0.03, 1)}s`;
+                card.style.animationDelay = `${Math.min(i * 0.02, 0.5)}s`;
                 
-                let header = document.createElement('div');
-                header.className = 'card-header';
-                
+                // 1. Raqam qismi
                 let numBox = document.createElement('div');
                 numBox.className = 'q-num';
                 numBox.innerText = i;
                 
+                // 2. Javoblar qismi
                 let content = document.createElement('div');
-                content.style.width = '100%';
+                content.className = 'content-area';
 
-                // --- ASOSIY LOGIKA ---
-                // Bu yerda 'type' o'zgaruvchisi ishlatiladi
+                // --- LOGIKA ---
                 if (type === 'rash') {
-                    if (i <= 32) {
-                        // 1-32: A, B, C, D
-                        renderOptions(i, ['A','B','C','D'], content);
-                    } 
-                    else if (i >= 33 && i <= 35) {
-                        // 33-35: A, B, C, D, E, F
-                        renderOptions(i, ['A','B','C','D','E','F'], content);
-                    }
-                    else if (i >= 36 && i <= 39) {
-                        // 36-39: Bitta input (Yozma)
-                        renderInput(i, content);
-                    }
-                    else if (i >= 40 && i <= 44) {
-                        // 40-44: Ikkitalik input (a, b)
-                        renderDoubleInput(i, content);
-                    }
-                    else {
-                        // 44 dan ko'p bo'lsa standart input
-                        renderInput(i, content);
-                    }
+                    if (i <= 32) renderOptions(i, ['A','B','C','D'], content);
+                    else if (i <= 35) renderOptions(i, ['A','B','C','D','E','F'], content);
+                    else if (i <= 39) renderInput(i, content);
+                    else if (i <= 44) renderDoubleInput(i, content);
+                    else renderInput(i, content);
                 } else {
-                    // DTM standarti (Hammasi 4 talik)
                     renderOptions(i, ['A','B','C','D'], content);
                 }
 
-                header.appendChild(numBox);
-                header.appendChild(content);
-                card.appendChild(header);
+                card.appendChild(numBox);
+                card.appendChild(content);
                 container.appendChild(card);
             }
         }
 
-        // Variantlarni chizish (A, B, C...)
+        // Variantlar (A, B, C, D) - Qora tugmalar
         function renderOptions(idx, opts, parent) {
             let div = document.createElement('div');
             div.className = 'options';
@@ -300,10 +293,10 @@
             parent.appendChild(div);
         }
 
-        // Bitta input chizish
+        // Matn kiritish (Oq maydon)
         function renderInput(idx, parent) {
             let inp = document.createElement('input');
-            inp.type = 'text'; inp.className = 'text-input'; inp.placeholder = 'Javob...';
+            inp.type = 'text'; inp.className = 'text-input'; inp.placeholder = 'JAVOB';
             inp.oninput = (e) => {
                 let val = e.target.value.toUpperCase().trim();
                 answers[idx-1] = val.length > 0 ? val : null;
@@ -312,18 +305,16 @@
             parent.appendChild(inp);
         }
 
-        // Ikkitalik input chizish (a, b)
+        // Ikkitalik kiritish (a, b)
         function renderDoubleInput(idx, parent) {
             let container = document.createElement('div');
             container.className = 'double-container';
 
-            // A input
             let rowA = document.createElement('div'); rowA.className = 'double-row';
             rowA.innerHTML = `<span class="double-label">a)</span>`;
             let inpA = document.createElement('input'); inpA.className = 'text-input'; 
             rowA.appendChild(inpA);
 
-            // B input
             let rowB = document.createElement('div'); rowB.className = 'double-row';
             rowB.innerHTML = `<span class="double-label">b)</span>`;
             let inpB = document.createElement('input'); inpB.className = 'text-input'; 
@@ -336,7 +327,6 @@
             const update = () => {
                 let vA = inpA.value.toUpperCase().trim();
                 let vB = inpB.value.toUpperCase().trim();
-                // Botga ajratish uchun "|" ishlatamiz.
                 if (vA || vB) answers[idx-1] = `${vA}|${vB}`;
                 else answers[idx-1] = null;
                 updateUI();
@@ -344,7 +334,6 @@
             inpA.oninput = update; inpB.oninput = update;
         }
 
-        // UI yangilash
         function updateUI() {
             let solved = answers.filter(a => a !== null).length;
             let pct = Math.round((solved / totalQuestions) * 100);
@@ -353,17 +342,13 @@
             document.getElementById('count-txt').innerText = `${solved}/${totalQuestions}`;
         }
 
-        // Ma'lumotni yuborish
         function sendData() {
             let solved = answers.filter(a => a !== null).length;
             if (solved < totalQuestions) {
                 tg.showPopup({
                     title: 'Diqqat',
                     message: `${totalQuestions - solved} ta savol qolib ketdi. Baribir yuborasizmi?`,
-                    buttons: [
-                        {id:'cancel', type:'default', text:'Yo\'q'}, 
-                        {id:'ok', type:'destructive', text:'HA, YUBORISH'}
-                    ]
+                    buttons: [{id:'cancel', type:'default', text:'Yo\'q'}, {id:'ok', type:'destructive', text:'HA, YUBORISH'}]
                 }, (btn) => { if (btn === 'ok') finalSend(); });
             } else {
                 finalSend();
@@ -371,7 +356,6 @@
         }
 
         function finalSend() {
-            // Bo'sh joylarni 'X' bilan to'ldiramiz
             let data = answers.map(a => a ? a : "X");
             tg.sendData(JSON.stringify(data));
             tg.close();
