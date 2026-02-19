@@ -14,45 +14,134 @@
             --accent-color: var(--tg-theme-button-color, #007aff);
             --accent-text: var(--tg-theme-button-text-color, #ffffff);
             --border-color: #d1d1d1;
+            --success-color: #28a745;
         }
-        body { font-family: 'Roboto', sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding-bottom: 100px; -webkit-tap-highlight-color: transparent; user-select: none; }
+        
+        * { box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            margin: 0; 
+            padding-bottom: 100px; 
+            -webkit-tap-highlight-color: transparent; 
+            user-select: none; 
+        }
         
         /* HEADER */
-        .header { position: fixed; top: 0; left: 0; right: 0; background: var(--card-bg); padding: 10px 20px; z-index: 100; border-bottom: 1px solid var(--border-color); }
+        .header { 
+            position: fixed; top: 0; left: 0; right: 0; 
+            background: var(--card-bg); 
+            padding: 10px 20px; 
+            z-index: 100; 
+            border-bottom: 1px solid var(--border-color); 
+        }
         .progress-info { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 5px; font-size: 14px; }
         .progress-bar { height: 6px; background: #e0e0e0; border-radius: 10px; overflow: hidden; }
         .progress-fill { height: 100%; width: 0%; background: var(--accent-color); transition: width 0.3s ease; }
 
         /* ADMIN PANEL */
-        #admin-panel { padding: 20px; margin-top: 60px; text-align: center; display: none; }
-        .admin-input { padding: 12px; font-size: 18px; border-radius: 8px; border: 1px solid var(--border-color); width: 80px; text-align: center; }
-        .admin-btn { margin-top: 10px; padding: 12px 25px; background: var(--accent-color); color: var(--accent-text); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        #admin-panel { 
+            padding: 20px; 
+            margin-top: 80px; 
+            text-align: center; 
+            display: none; 
+        }
+        .admin-title { font-size: 18px; margin-bottom: 15px; font-weight: bold; }
+        .admin-input { 
+            padding: 12px; font-size: 18px; 
+            border-radius: 8px; border: 1px solid var(--border-color); 
+            width: 100px; text-align: center; 
+            background: var(--card-bg); color: var(--text-color);
+        }
+        .admin-btn { 
+            margin-top: 15px; padding: 12px 25px; 
+            background: var(--accent-color); color: var(--accent-text); 
+            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; 
+        }
 
-        /* QUESTIONS */
-        #container { padding: 15px; margin-top: 60px; max-width: 600px; margin-left: auto; margin-right: auto; }
-        .question-card { background: var(--card-bg); border-radius: 12px; padding: 12px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 10px; }
-        .card-header { display: flex; align-items: center; gap: 10px; }
-        .q-num { background: #eee; color: #333; font-weight: 900; padding: 6px 10px; border-radius: 6px; min-width: 25px; text-align: center; }
+        /* QUESTIONS CONTAINER */
+        #container { 
+            padding: 15px; 
+            margin-top: 70px; 
+            max-width: 600px; 
+            margin-left: auto; margin-right: auto; 
+        }
         
-        /* OPTIONS A,B,C... */
-        .options { display: flex; gap: 8px; flex-wrap: wrap; }
-        .option-btn { width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; transition: 0.2s; }
-        .option-btn.selected { background-color: var(--accent-color); color: var(--accent-text); border-color: var(--accent-color); }
+        .question-card { 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            padding: 15px; 
+            margin-bottom: 15px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            border: 1px solid var(--border-color);
+            display: flex; flex-direction: column; gap: 10px; 
+            animation: fadeIn 0.3s ease forwards;
+        }
 
-        /* INPUTS */
-        .text-input { width: 100%; padding: 10px; font-size: 16px; font-weight: 600; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; text-transform: uppercase; background: var(--bg-color); color: var(--text-color); }
-        .text-input:focus { border-color: var(--accent-color); outline: none; }
+        .card-header { display: flex; align-items: center; gap: 12px; }
+        .q-num { 
+            background: #eee; color: #333; 
+            font-weight: 900; font-size: 16px;
+            padding: 8px 12px; border-radius: 8px; 
+            min-width: 40px; text-align: center; 
+        }
+        
+        /* OPTIONS GRID */
+        .options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .option-btn { 
+            width: 42px; height: 42px; 
+            border-radius: 10px; border: 1px solid var(--border-color); 
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: 700; cursor: pointer; transition: 0.15s; 
+            background: var(--bg-color); color: var(--text-color);
+        }
+        .option-btn.selected { 
+            background-color: var(--accent-color); 
+            color: var(--accent-text); 
+            border-color: var(--accent-color); 
+            transform: scale(1.05);
+        }
+
+        /* TEXT INPUTS */
+        .text-input { 
+            width: 100%; padding: 12px; 
+            font-size: 16px; font-weight: 600; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            text-transform: uppercase; 
+            background: var(--bg-color); color: var(--text-color); 
+            outline: none;
+        }
+        .text-input:focus { border-color: var(--accent-color); }
 
         /* DOUBLE INPUT (a, b) */
-        .double-row { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
-        .double-label { font-weight: bold; color: var(--accent-color); width: 20px; }
+        .double-container { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .double-row { display: flex; align-items: center; gap: 10px; }
+        .double-label { font-weight: 900; color: var(--accent-color); font-size: 18px; width: 25px; }
 
-        /* FOOTER */
-        .footer { position: fixed; bottom: 20px; left: 0; right: 0; padding: 0 20px; max-width: 600px; margin: 0 auto; pointer-events: none; }
-        #submitBtn { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; pointer-events: auto; box-shadow: 0 4px 10px rgba(40,167,69,0.3); display: none; }
+        /* FOOTER BUTTON */
+        .footer { 
+            position: fixed; bottom: 20px; left: 0; right: 0; 
+            padding: 0 20px; max-width: 600px; margin: 0 auto; 
+            pointer-events: none; 
+        }
+        #submitBtn { 
+            width: 100%; padding: 16px; 
+            background: var(--success-color); color: white; 
+            border: none; border-radius: 12px; 
+            font-size: 18px; font-weight: bold; 
+            cursor: pointer; pointer-events: auto; 
+            box-shadow: 0 4px 15px rgba(40,167,69,0.3); 
+            display: none; 
+        }
+        #submitBtn:active { transform: scale(0.98); }
         
         .hidden { display: none !important; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -62,8 +151,9 @@
     </div>
 
     <div id="admin-panel">
-        <h3>Savollar sonini kiriting:</h3>
+        <div class="admin-title">Savollar sonini kiriting:</div>
         <input type="number" id="admin-count" class="admin-input" value="44">
+        <br>
         <button class="admin-btn" onclick="startAdmin()">TEST YARATISH</button>
     </div>
 
@@ -78,43 +168,59 @@
         tg.expand();
         tg.enableClosingConfirmation();
 
-        // Ranglarni Telegramdan olish
+        // Telegram ranglarini o'qib olish
         document.documentElement.style.setProperty('--bg-color', tg.backgroundColor || '#f4f4f4');
         document.documentElement.style.setProperty('--card-bg', tg.secondaryBackgroundColor || '#ffffff');
         document.documentElement.style.setProperty('--text-color', tg.textColor || '#000000');
         document.documentElement.style.setProperty('--accent-color', tg.buttonColor || '#007aff');
         document.documentElement.style.setProperty('--accent-text', tg.buttonTextColor || '#ffffff');
 
+        // URL parametrlarini olish
         const urlParams = new URLSearchParams(window.location.search);
-        const mode = urlParams.get('mode'); 
+        const mode = urlParams.get('mode'); // 'admin' yoki 'user'
         const countParam = parseInt(urlParams.get('count')) || 44;
-        const testType = urlParams.get('type') || 'dtm';
+        let testType = urlParams.get('type'); // 'rash' yoki 'dtm'
+
+        // AGAR TEST TURI KELMASA VA SONI 44 BO'LSA - RASH MODELINI TANLAYMIZ
+        if (!testType) {
+            if (countParam === 44) testType = 'rash';
+            else testType = 'dtm';
+        }
 
         let answers = [];
         let totalQuestions = 44;
         
-        // Elementlar
         const container = document.getElementById('container');
         const adminPanel = document.getElementById('admin-panel');
         const headerBar = document.getElementById('header-bar');
         const submitBtn = document.getElementById('submitBtn');
 
+        // Boshlash logikasi
         if (mode === 'admin') {
             headerBar.classList.add('hidden');
             adminPanel.style.display = 'block';
         } else {
+            // User rejimida darhol testni chizamiz
             initTest(countParam);
         }
 
+        // Admin "Test Yaratish" tugmasini bossa
         function startAdmin() {
             const val = parseInt(document.getElementById('admin-count').value);
             if (val > 0) {
+                // AGAR ADMIN 44 KIRITSA, AVTOMATIK RASH REJIMIGA O'TADI
+                if (val === 44) testType = 'rash';
+                else testType = 'dtm'; // Boshqa son bo'lsa standart test
+
                 adminPanel.style.display = 'none';
                 headerBar.classList.remove('hidden');
                 initTest(val);
+            } else {
+                tg.showAlert("Son kiriting!");
             }
         }
 
+        // Testni ekranga chizish
         function initTest(n) {
             totalQuestions = n;
             answers = new Array(n).fill(null);
@@ -125,31 +231,54 @@
             for (let i = 1; i <= n; i++) {
                 let card = document.createElement('div');
                 card.className = 'question-card';
+                card.style.animationDelay = `${Math.min(i * 0.03, 1)}s`;
                 
                 let header = document.createElement('div');
                 header.className = 'card-header';
-                header.innerHTML = `<div class="q-num">${i}</div>`;
+                
+                let numBox = document.createElement('div');
+                numBox.className = 'q-num';
+                numBox.innerText = i;
                 
                 let content = document.createElement('div');
                 content.style.width = '100%';
 
-                // --- MANTIQ (RASH MODELI) ---
-                if (testType === 'rash') {
-                    if (i <= 32) renderOptions(i, ['A','B','C','D'], content);
-                    else if (i <= 35) renderOptions(i, ['A','B','C','D','E','F'], content);
-                    else if (i <= 39) renderInput(i, content);
-                    else if (i <= 44) renderDoubleInput(i, content);
-                    else renderInput(i, content);
+                // --- ASOSIY LOGIKA O'ZGARDI ---
+                // Agar tip 'rash' bo'lsa YOKI savollar soni 44 ta bo'lsa
+                if (testType === 'rash' || n === 44) {
+                    if (i <= 32) {
+                        // 1-32: A, B, C, D
+                        renderOptions(i, ['A','B','C','D'], content);
+                    } 
+                    else if (i >= 33 && i <= 35) {
+                        // 33-35: A, B, C, D, E, F
+                        renderOptions(i, ['A','B','C','D','E','F'], content);
+                    }
+                    else if (i >= 36 && i <= 39) {
+                        // 36-39: Bitta input (Yozma)
+                        renderInput(i, content);
+                    }
+                    else if (i >= 40 && i <= 44) {
+                        // 40-44: Ikkitalik input (a, b)
+                        renderDoubleInput(i, content);
+                    }
+                    else {
+                        // 44 dan ko'p bo'lsa standart input
+                        renderInput(i, content);
+                    }
                 } else {
+                    // DTM standarti (Hammasi 4 talik)
                     renderOptions(i, ['A','B','C','D'], content);
                 }
 
+                header.appendChild(numBox);
+                header.appendChild(content);
                 card.appendChild(header);
-                card.appendChild(content);
                 container.appendChild(card);
             }
         }
 
+        // Variantlarni chizish (A, B, C...)
         function renderOptions(idx, opts, parent) {
             let div = document.createElement('div');
             div.className = 'options';
@@ -169,6 +298,7 @@
             parent.appendChild(div);
         }
 
+        // Bitta input chizish
         function renderInput(idx, parent) {
             let inp = document.createElement('input');
             inp.type = 'text'; inp.className = 'text-input'; inp.placeholder = 'Javob...';
@@ -180,7 +310,11 @@
             parent.appendChild(inp);
         }
 
+        // Ikkitalik input chizish (a, b)
         function renderDoubleInput(idx, parent) {
+            let container = document.createElement('div');
+            container.className = 'double-container';
+
             // A input
             let rowA = document.createElement('div'); rowA.className = 'double-row';
             rowA.innerHTML = `<span class="double-label">a)</span>`;
@@ -193,12 +327,14 @@
             let inpB = document.createElement('input'); inpB.className = 'text-input'; 
             rowB.appendChild(inpB);
 
-            parent.appendChild(rowA); parent.appendChild(rowB);
+            container.appendChild(rowA); 
+            container.appendChild(rowB);
+            parent.appendChild(container);
 
             const update = () => {
                 let vA = inpA.value.toUpperCase().trim();
                 let vB = inpB.value.toUpperCase().trim();
-                // Botga "JAVOB_A|JAVOB_B" formatida boradi
+                // Botga ajratish uchun "|" ishlatamiz.
                 if (vA || vB) answers[idx-1] = `${vA}|${vB}`;
                 else answers[idx-1] = null;
                 updateUI();
@@ -206,6 +342,7 @@
             inpA.oninput = update; inpB.oninput = update;
         }
 
+        // UI yangilash
         function updateUI() {
             let solved = answers.filter(a => a !== null).length;
             let pct = Math.round((solved / totalQuestions) * 100);
@@ -214,13 +351,17 @@
             document.getElementById('count-txt').innerText = `${solved}/${totalQuestions}`;
         }
 
+        // Ma'lumotni yuborish
         function sendData() {
             let solved = answers.filter(a => a !== null).length;
             if (solved < totalQuestions) {
                 tg.showPopup({
                     title: 'Diqqat',
-                    message: `${totalQuestions - solved} ta savol qolib ketdi. Yuborasizmi?`,
-                    buttons: [{id:'ok', type:'destructive', text:'HA'}, {id:'no', text:'YO\'Q'}]
+                    message: `${totalQuestions - solved} ta savol qolib ketdi. Baribir yuborasizmi?`,
+                    buttons: [
+                        {id:'cancel', type:'default', text:'Yo\'q'}, 
+                        {id:'ok', type:'destructive', text:'HA, YUBORISH'}
+                    ]
                 }, (btn) => { if (btn === 'ok') finalSend(); });
             } else {
                 finalSend();
@@ -228,6 +369,7 @@
         }
 
         function finalSend() {
+            // Bo'sh joylarni 'X' bilan to'ldiramiz
             let data = answers.map(a => a ? a : "X");
             tg.sendData(JSON.stringify(data));
             tg.close();
