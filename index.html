@@ -141,7 +141,6 @@
         .hidden { display: none !important; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
-<base target="_blank">
 </head>
 <body>
 
@@ -179,12 +178,11 @@
         const urlParams = new URLSearchParams(window.location.search);
         const mode = urlParams.get('mode'); // 'admin' yoki 'user'
         const countParam = parseInt(urlParams.get('count')) || 44;
-        let testType = urlParams.get('type'); // 'rash' yoki 'dtm'
+        let initialTestType = urlParams.get('type'); 
 
-        // AGAR TEST TURI KELMASA VA SONI 44 BO'LSA - RASH MODELINI TANLAYMIZ
-        if (!testType) {
-            if (countParam === 44) testType = 'rash';
-            else testType = 'dtm';
+        // Agar user rejimida bo'lsa va type berilmagan bo'lsa
+        if (!initialTestType && countParam === 44) {
+            initialTestType = 'rash';
         }
 
         let answers = [];
@@ -201,27 +199,31 @@
             adminPanel.style.display = 'block';
         } else {
             // User rejimida darhol testni chizamiz
-            initTest(countParam);
+            initTest(countParam, initialTestType || 'dtm');
         }
 
         // Admin "Test Yaratish" tugmasini bossa
         function startAdmin() {
             const val = parseInt(document.getElementById('admin-count').value);
             if (val > 0) {
+                let typeToUse = 'dtm';
                 // AGAR ADMIN 44 KIRITSA, AVTOMATIK RASH REJIMIGA O'TADI
-                if (val === 44) testType = 'rash';
-                else testType = 'dtm'; // Boshqa son bo'lsa standart test
+                if (val === 44) {
+                    typeToUse = 'rash';
+                }
 
                 adminPanel.style.display = 'none';
                 headerBar.classList.remove('hidden');
-                initTest(val);
+                
+                // Funksiyaga son va turni aniq qilib yuboramiz
+                initTest(val, typeToUse);
             } else {
                 tg.showAlert("Son kiriting!");
             }
         }
 
         // Testni ekranga chizish
-        function initTest(n) {
+        function initTest(n, type) {
             totalQuestions = n;
             answers = new Array(n).fill(null);
             updateUI();
@@ -243,9 +245,9 @@
                 let content = document.createElement('div');
                 content.style.width = '100%';
 
-                // --- ASOSIY LOGIKA O'ZGARDI ---
-                // Agar tip 'rash' bo'lsa YOKI savollar soni 44 ta bo'lsa
-                if (testType === 'rash' || n === 44) {
+                // --- ASOSIY LOGIKA ---
+                // Bu yerda 'type' o'zgaruvchisi ishlatiladi
+                if (type === 'rash') {
                     if (i <= 32) {
                         // 1-32: A, B, C, D
                         renderOptions(i, ['A','B','C','D'], content);
